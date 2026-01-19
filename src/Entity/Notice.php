@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\NoticeRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
+
+#[ORM\Entity(repositoryClass: NoticeRepository::class)]
+class Notice
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $comment = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $note = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notices')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment): static
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(int $note): static
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+}
