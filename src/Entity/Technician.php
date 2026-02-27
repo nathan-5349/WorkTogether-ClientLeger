@@ -7,26 +7,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TechnicianRepository::class)]
-class Technician
+class Technician extends User
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column]
-    private ?int $niveau = null;
-
     #[ORM\Column(length: 14)]
     private ?string $phone = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $level = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getLevel(): ?int
     {
@@ -37,6 +24,17 @@ class Technician
     {
         $this->level = $level;
 
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
         return $this;
     }
 }

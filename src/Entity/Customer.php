@@ -7,14 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Notice;
+use App\Entity\Reservation;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
-class Customer
+abstract class Customer extends User
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 200)]
     private ?string $adress = null;
@@ -27,6 +24,15 @@ class Customer
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Notice::class, orphanRemoval: true)]
     private Collection $notices;
+
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->notices = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,11 +75,6 @@ class Customer
         return $this;
     }
 
-    public function __construct()
-    {
-        $this->notices = new ArrayCollection();
-    }
-
     public function getNotices(): Collection
     {
         return $this->notices;
@@ -88,7 +89,6 @@ class Customer
 
         return $this;
     }
-
     public function removeNotice(Notice $notice): static
     {
         if ($this->notices->removeElement($notice)) {
@@ -98,5 +98,27 @@ class Customer
         }
 
         return $this;
+    }
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setCustomer($this);
+        }
+        return $this;
+    }
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            if ($reservation->getCustomer() === $this) {
+                $reservation->setCustomer(null);
+            }
+        } 
+        return $this;     
     }
 }

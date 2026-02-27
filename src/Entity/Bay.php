@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Repository\BayRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\Unit;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Unit;
 
 #[ORM\Entity(repositoryClass: BayRepository::class)]
 class Bay
@@ -17,27 +19,53 @@ class Bay
     #[ORM\Column]
     private ?int $capacityUnit = null;
 
+    #[ORM\OneToMany(mappedBy: 'bay', targetEntity: Unit::class, orphanRemoval: true)]
+    private Collection $units;
+
+    public function __construct()
+    {
+        $this->units = new ArrayCollection();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getCapacityUnit(): ?int
     {
         return $this->capacityUnit;
     }
-
     public function setCapacityUnit(int $capacityUnit): static
     {
         $this->capacityUnit = $capacityUnit;
 
         return $this;
     }
+
+    public function getUnits(): Collection
+    {
+        return $this->units;
+    }
+    public function addUnit(Unit $unit): static
+    {
+        if (!$this->units->contains($unit)) {
+            $this->units->add($unit);
+            $unit->setBay($this);
+        }
+
+        return $this;
+    }
+    public function removeUnit(Unit $unit): static
+    {
+        if ($this->units->removeElement($unit)) {
+            // set the owning side to null (unless already changed)
+            if ($unit->getBay() === $this) {
+                $unit->setBay(null);
+            }
+        }
+
+        return $this;
+    }
+    
 }

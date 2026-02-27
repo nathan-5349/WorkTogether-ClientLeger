@@ -6,15 +6,19 @@ use App\Repository\ParticularRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticularRepository::class)]
-class Particular
+class Particular extends Customer
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(length: 14)]
+    private ?string $gender = null;
 
-    public function getId(): ?int
+    public function getGender(): ?string
     {
-        return $this->id;
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): static
+    {
+        $this->gender = $gender;
+        return $this;
     }
 }

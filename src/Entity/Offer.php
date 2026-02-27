@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\OfferRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Reservation;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 class Offer
@@ -22,16 +25,17 @@ class Offer
     #[ORM\Column]
     private ?int $price = null;
 
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'offer')]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -68,5 +72,10 @@ class Offer
         $this->price = $price;
 
         return $this;
+    }
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
     }
 }

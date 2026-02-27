@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\NoticeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\User;
+use App\Entity\Customer;
 
 #[ORM\Entity(repositoryClass: NoticeRepository::class)]
 class Notice
@@ -28,13 +28,6 @@ class Notice
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getComment(): ?string

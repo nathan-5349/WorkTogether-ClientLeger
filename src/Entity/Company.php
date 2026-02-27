@@ -6,20 +6,13 @@ use App\Repository\CompanyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-class Company
+class Company extends Customer
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 14)]
     private ?string $siret = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    #[ORM\Column(length: 100)]
+    private ?string $companyName = null;
 
     public function getSiret(): ?string
     {
@@ -30,6 +23,17 @@ class Company
     {
         $this->siret = $siret;
 
+        return $this;
+    }
+
+    public function getCompanyName(): ?string
+    {
+        return $this->companyName;
+    }
+
+    public function setCompanyName(string $companyName): static
+    {
+        $this->companyName = $companyName;
         return $this;
     }
 }

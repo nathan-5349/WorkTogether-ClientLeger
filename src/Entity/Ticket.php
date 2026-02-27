@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TicketRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Enum\TicketStatus;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket
@@ -26,16 +27,21 @@ class Ticket
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private ?\DateTime $CloseDate = null;
 
+    #[ORM\Column(type: 'string', enumType: TicketStatus::class)]
+    private TicketStatus $status = TicketStatus::Open;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->technician = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getSubject(): ?string
@@ -83,6 +89,17 @@ class Ticket
     {
         $this->CloseDate = $CloseDate;
 
+        return $this;
+    }
+
+    public function getStatus(): SupportStatus
+    {
+        return $this->status;
+    }
+    
+    public function setStatus(SupportStatus $status): static
+    {
+        $this->status = $status;
         return $this;
     }
 }
