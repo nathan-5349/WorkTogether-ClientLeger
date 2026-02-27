@@ -9,6 +9,13 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+    
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_ACCOUNTANT, ROLE_SUPPORT, ROLE_TECHNICIAN]
+        ROLE_ACCOUNTANT: ROLE_USER
+        ROLE_SUPPORT: ROLE_USER
+        ROLE_TECHNICIAN: ROLE_USER
+        ROLE_CUSTOMER: ROLE_USER
 
     firewalls:
         dev:
@@ -18,6 +25,15 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                default_target_path: app_dashboard
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -27,8 +43,9 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/comptable, roles: ROLE_ACCOUNTANT }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
