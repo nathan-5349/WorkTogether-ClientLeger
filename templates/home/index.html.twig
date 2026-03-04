@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}WorkTogether Data Solutions{% endblock %}
+
+{% block body %}
+<div class="container-fluid bg-dark text-light p-5 text-center">
+    <h1>WorkTogether Data Solutions</h1>
+    <p>Votre partenaire de confiance pour la gestion de vos datacenters</p>
+    <a href="{{ path('app_offer') }}" class="btn btn-primary">Découvrir nos offres</a>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Qui sommes-nous ?</h2>
+            <p>Chez WorkTogether Data Solutions, nous sommes spécialisés dans la gestion de datacenters de pointe. 
+                Grâce à notre expertise en sécurité, fiabilité et durabilité, nous proposons une gamme complète de services 
+                pour accompagner les entreprises du monde entier dans l’optimisation de leurs infrastructures informatiques.</p>
+        </div>
+            
+        <div class="col-md-6">
+            <h2>Nos Services</h2>
+            <p>Désormais, vous pouvez louer de l’espace dans nos datacenters de pointe pour héberger vos équipements 
+                informatiques en toute sérénité. En choisissant la location d’une baie chez WorkTogether, vous profitez de :</p>
+            <ul>
+                <li><strong>Connectivité ultrarapide</strong> pour vos données et applications</li>
+                <li><strong>Redondance électrique</strong> assurant la continuité de vos opérations</li>
+                <li><strong>Sécurité physique et électronique</strong> renforcée pour protéger vos équipements</li>
+            </ul>
+                <p>Optez pour la flexibilité et la tranquillité d’esprit : votre infrastructure est entre de bonnes mains, 
+                    sans les contraintes de gestion quotidienne.</p>
+        </div>
+    </div>
+    <div class="row mt-4">  
+        <div class="col-12">
+            <h2>Notre mission</h2>
+            <p>Permettre à nos clients de se concentrer sur leur cœur de métier tout en assurant la disponibilité, 
+                la performance et la protection de leurs systèmes.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+                

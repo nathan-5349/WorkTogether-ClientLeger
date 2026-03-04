@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos offres{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Nos offres</h1>
+    <div class="row">
+        {% for offer in offers %}
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ offer.name }}</h5>
+                    <p class="card-text">{{ offer.nbUnit }} unités</p>
+                    <p class="card-text">{{ offer.price }} €/mois</p>
+                    <a href="#" class="btn btn-primary">Commander</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
