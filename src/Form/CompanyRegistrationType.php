@@ -16,14 +16,18 @@ class CompanyRegistrationType extends AbstractType
         $builder
             ->add('firstName' , null , ['label' => 'Prénom'])
             ->add('name', null , ['label' => 'Nom'])
-            ->add('email', null , ['label' => 'Email'])
-            ->add('password', null , ['label' => 'Mot de passe'],RepeatedType::class, [
+            ->add('email', null , ['label' => 'Email']);
+
+        if (!$options['is_edit']) {
+        $builder->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'required' => true,
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmer le mot de passe'],
-            ])
+            ]);
+        }
+        $builder
             ->add('phone', null , ['label' => 'Téléphone'])
             ->add('adress', null , ['label' => 'Adresse'])
             ->add('invoiceAdress', null , ['label' => 'Adresse de facturation'])
@@ -36,6 +40,7 @@ class CompanyRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Company::class,
+            'is_edit' => false,
         ]);
     }
 }

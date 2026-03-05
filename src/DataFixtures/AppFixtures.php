@@ -39,7 +39,7 @@ class AppFixtures extends Fixture
         $particular->setAdress('1 rue de la paix');
         $particular->setInvoiceAdress('1 rue de la paix');
         $particular->setPhone('0123456789');
-        $particular->setGender("M");  
+        $particular->setGender("Monsieur");  
         $particular->setRoles(['ROLE_CUSTOMER']);
         $particular->setPassword($this->passwordHasher->hashPassword($particular, 'particular'));
 

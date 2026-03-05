@@ -17,14 +17,18 @@ class ParticularRegistrationType extends AbstractType
         $builder
             ->add('firstName' , null , ['label' => 'Prénom'])
             ->add('name', null , ['label' => 'Nom'])
-            ->add('email', null , ['label' => 'Email'])
-            ->add('password',RepeatedType::class, [
+            ->add('email', null , ['label' => 'Email']);
+
+        if (!$options['is_edit']) {
+            $builder->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'required' => true,
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmer le mot de passe'],
-            ])
+            ]);
+        }
+        $builder
             ->add('phone', null , ['label' => 'Téléphone'])
             ->add('adress', null , ['label' => 'Adresse'])
             ->add('invoiceAdress', null , ['label' => 'Adresse de facturation'])
@@ -32,8 +36,8 @@ class ParticularRegistrationType extends AbstractType
                 'label' => 'Genre',
                 'expanded' => true,
                 'choices' => [
-                    'Monsieur' => 'Homme',
-                    'Madame' => 'Femme',
+                    'Monsieur' => 'Monsieur',
+                    'Madame' => 'Madame',
                 ],
             ])
         ;
@@ -43,6 +47,7 @@ class ParticularRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Particular::class,
+            'is_edit' => false,
         ]);
     }
 }

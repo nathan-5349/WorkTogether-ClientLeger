@@ -46,6 +46,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/comptable, roles: ROLE_ACCOUNTANT }
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/customer, roles: ROLE_CUSTOMER }
 
 when@test:
     security:

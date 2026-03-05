@@ -121,4 +121,10 @@ abstract class Customer extends User
         } 
         return $this;     
     }
+
+    // Utile pour détecter le type de client
+    public function isParticular(): bool
+    {
+        return $this instanceof Particular;
+    }
 }

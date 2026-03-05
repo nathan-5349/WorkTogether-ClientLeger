@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <p>Prénom : {{ user.firstName }} </p>
+    <p>Nom : {{ user.name }} </p>
+    <p>Email : {{ user.email }} </p>
+    <p>Téléphone : {{ user.phone }} </p>
+    <p>Adresse : {{ user.adress }} </p>
+    <p>Adresse de facturation : {{ user.invoiceAdress }} </p>
+    {% if user.isParticular %}
+        <p>Civilité : {{ user.gender }} </p>
+    {% else %}
+        <p>Siret : {{ user.siret }} </p>
+        <p>Nom de l'entreprise : {{ user.companyName }} </p>
+    {% endif %}
+</div>
+<div>
+    <a href="{{ path('app_customer_edit') }}" class="btn btn-primary mt-3">
+    Modifier mes informations
+    </a>
+    <a href="{{ path('app_customer_change_password') }}" class="btn btn-primary mt-3">
+    Modifier mon mot de passe
+    </a>
+</div>
+{% endblock %}
