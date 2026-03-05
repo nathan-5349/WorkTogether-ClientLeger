@@ -40,4 +40,15 @@ class UnitRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findAvailableUnits(int $nbUnits): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.reservations', 'r')
+            ->where('r.id IS NULL OR r.finishDate < :now')
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setMaxResults($nbUnits);            
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -13,7 +13,7 @@
                     <h5 class="card-title">{{ offer.name }}</h5>
                     <p class="card-text">{{ offer.nbUnit }} unités</p>
                     <p class="card-text">{{ offer.price }} €/mois</p>
-                    <a href="#" class="btn btn-primary">Commander</a>
+                    <a href="{{ path('app_order', {'id': offer.id}) }}" class="btn btn-primary">Commander</a>
                 </div>
             </div>
         </div>

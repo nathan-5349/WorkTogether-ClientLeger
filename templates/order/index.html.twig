@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offre {{ offer.name }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <p>Prix : {{ offer.price }}</p>
+    {{ form_start(form) }}
+        {{ form_row(form.beginDate) }}
+        {{ form_row(form.duration) }}
+        <button type="submit" class="btn btn-success w-100 mt-3">
+        Commander
+        </button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

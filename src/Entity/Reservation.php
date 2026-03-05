@@ -42,7 +42,6 @@ class Reservation
 
     public function __construct()
     {
-        $this->offers = new ArrayCollection();
         $this->units = new ArrayCollection();
     }
 
@@ -75,22 +74,25 @@ class Reservation
         return $this;
     }
 
-    public function getOffer(): Collection
+    public function getOffer(): ?Offer
     {
-        return $this->offers;
+        return $this->offer;
     }
-    public function addOffer(Offer $offer): static
-    {
-        if (!$this->offers->contains($offer)) {
-            $this->offers->add($offer);
-        }
 
+    public function setOffer(?Offer $offer): static
+    {
+        $this->offer = $offer;
         return $this;
     }
-    public function removeOffer(Offer $offer): static
-    {
-        $this->offers->removeElement($offer);
 
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
         return $this;
     }
 
@@ -109,6 +111,18 @@ class Reservation
     public function removeUnit(Unit $unit): static
     {
         $this->units->removeElement($unit);
+
+        return $this;
+    }
+
+    public function getStatus(): ReservationStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(ReservationStatus $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande effectuée{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <p>Votre commande a bien été enregistré !</p>
+    <p>Voii les détails de votre commande</p>
+    <p>Offre Choisie : {{ reservation.offer.name}}</p>
+    <p>Prix : {{ reservation.offer.price}}</p>
+    <p>Date de début : {{ reservation.beginDate|date('d/m/Y')}}</p>
+    <p>Date de fin : {{ reservation.finishDate|date('d/m/Y')}}</p>
+    {% for unit in reservation.units %}
+        <p>{{ unit.name }} - Baie {{ unit.bay.name }}</p>
+    {% endfor %}    
+    <p>Statut : {{ reservation.status.value}}</p>
+    <a href="{{ path('app_customer_dashboard') }}" class="btn btn-primary mt-3">
+    Accueil
+    </a>
+</div>
+{% endblock %}

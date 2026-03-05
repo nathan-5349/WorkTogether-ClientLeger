@@ -27,7 +27,7 @@ class Unit
     #[ORM\JoinColumn(nullable: false)]
     private ?Bay $bay = null;
 
-    #[ORM\OneToMany(mappedBy: 'unit', targetEntity: Reservation::class)]
+    #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'units')]
     private Collection $reservations;
 
     #[ORM\Column(type: 'string', enumType: UnitStatus::class)]
