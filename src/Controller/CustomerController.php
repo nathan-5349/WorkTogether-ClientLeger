@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ChangePasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Repository\ReservationRepository;
+use App\Entity\Customer;
 
 final class CustomerController extends AbstractController
 {
@@ -91,6 +93,22 @@ final class CustomerController extends AbstractController
 
         return $this->render('customer/change_password.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    
+    #[Route('/order/reservations', name: 'app_order_reservations')]
+    public function reservations(ReservationRepository $reservationRepository): Response
+    {
+        $customer = $this->getUser();
+        if (!$customer instanceof Customer) {
+            throw $this->createAccessDeniedException('Vous devez être un client pour voir vos réservations.');
+        }
+
+        $reservations = $reservationRepository->findBy(['customer' => $customer]);
+        
+        return $this->render('order/reservations.html.twig', [
+            'reservations' => $reservations,
         ]);
     }
 }
