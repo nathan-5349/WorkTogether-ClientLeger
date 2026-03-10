@@ -33,6 +33,9 @@ class Unit
     #[ORM\Column(type: 'string', enumType: UnitStatus::class)]
     private UnitStatus $status = UnitStatus::Available;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $type = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -98,5 +101,26 @@ class Unit
             }
         return $this;
         }
+    }
+
+    public function getStatus(): UnitStatus
+    {
+        return $this->status;
+    }
+    public function setStatus(UnitStatus $status): static
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
+        return $this;
     }
 }

@@ -14,6 +14,8 @@ use App\Entity\User;
 use App\Entity\Company;
 use App\Entity\Particular;
 use App\Entity\Offer;
+use App\Entity\Bay;
+use App\Entity\Unit;
 
 class AppFixtures extends Fixture
 {
@@ -99,6 +101,22 @@ class AppFixtures extends Fixture
                   ->setPrice($price);
             $manager->persist($offer);
         }
+        
+        // --- Création des baies et des unités ---
+        for ($b = 1; $b <= 30; $b++) {
+            $bay = new Bay();
+            $bay->setCapacityUnit(42);
+            $bay->setName(sprintf('B%03d', $b)); 
+            $manager->persist($bay);
+
+        for ($u = 1; $u <= 42; $u++) {
+            $unit = new Unit();
+            $unit->setName(sprintf('U%02d', $u)); 
+            $unit->setPosition($u);
+            $unit->setBay($bay);
+            $manager->persist($unit);
+            }
+        }   
 
         // --- Persistance des utilisateurs ---
         $manager->persist($administrator);

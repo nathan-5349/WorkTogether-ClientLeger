@@ -13,6 +13,8 @@ use App\Form\ChangePasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Repository\ReservationRepository;
 use App\Entity\Customer;
+use App\Repository\UnitRepository;
+use App\Form\UnitType;
 
 final class CustomerController extends AbstractController
 {
@@ -110,5 +112,28 @@ final class CustomerController extends AbstractController
         return $this->render('order/reservations.html.twig', [
             'reservations' => $reservations,
         ]);
+    }
+
+    #[Route('/customer/unit/{id}', name: 'app_customer_unit_detail')]
+    public function unitDetail(int $id, Request $request,EntityManagerInterface $em, UnitRepository $unitRepository): Response
+    {
+        $unit = $unitRepository->find($id);
+
+        if (!$unit) {
+            throw $this->createNotFoundException('Unité introuvable.');
+        }
+        
+        $form = $this->createForm(UnitType::class, $unit);
+        $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->flush();
+        return $this->redirectToRoute('app_customer_unit_detail', ['id' => $unit->getId()]);
+    }
+
+    return $this->render('customer/unit.html.twig', [
+        'unit' => $unit,
+        'form' => $form->createView(),
+    ]);
     }
 }

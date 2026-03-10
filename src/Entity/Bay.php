@@ -16,6 +16,9 @@ class Bay
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 25)]
+    private ?string $name = null;
+
     #[ORM\Column]
     private ?int $capacityUnit = null;
 
@@ -67,5 +70,16 @@ class Bay
 
         return $this;
     }
-    
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }

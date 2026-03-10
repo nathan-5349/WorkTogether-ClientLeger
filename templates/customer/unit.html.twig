@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detail{% endblock %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <p>Nom de l'unité:{{ unit.name }} </p>
+    <p>Emplacement :  {{ unit.bay.name }}-{{ unit.name }}</p>
+    <p>Statut : {{ unit.status.value }}</p>
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.type) }}
+    <button type="submit" class="btn btn-success mt-3">
+        Sauvegarder
+    </button>
+{{ form_end(form) }}
+    <div>
+        <a href="{{ path('app_customer_dashboard') }}" class="btn btn-primary mt-3">
+        Accueil
+        </a>
+        <a href="{{ path('app_order_reservations') }}" class="btn btn-primary mt-3">
+        Retour
+        </a>
+    </div>
+</div>
+
+{% endblock %}
