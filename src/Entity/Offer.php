@@ -32,13 +32,14 @@ class Offer
     private bool $isActive = true;
 
     #[ORM\Column]
-    private ?\DateImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt;
 
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'offer')]
     private Collection $reservations;
 
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
         $this->reservations = new ArrayCollection();
     }
 
@@ -96,12 +97,12 @@ class Offer
         $this->isActive = $isActive;
     }
 
-    public function getCreatedAt(): ?\DateImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateImmutable $createdAt): void
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

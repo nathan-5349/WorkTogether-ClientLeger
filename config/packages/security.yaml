@@ -61,6 +61,7 @@ security:
         - { path: ^/customer, roles: ROLE_CUSTOMER }
         - { path: ^/order, roles: ROLE_CUSTOMER }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/all_offer, roles: ROLE_ADMIN }
         - { path: ^/comptable, roles: ROLE_ACCOUNTANT }
 
         - { path : ^/api/login, roles: PUBLIC_ACCESS }

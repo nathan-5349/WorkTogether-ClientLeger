@@ -9,12 +9,20 @@ use App\Repository\OfferRepository;
 
 final class OfferController extends AbstractController
 {
-    #[Route('/offer', name: 'app_offer')]
-    public function index(OfferRepository $offerRepository): Response
+    #[Route('/all_offers', name: 'app_all_offers')]
+    public function allOffer(OfferRepository $offerRepository): Response
     {
         return $this->render('offer/index.html.twig', [
             'controller_name' => 'OfferController',
             'offers' => $offerRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/offers', name: 'app_offers')]
+    public function index(OfferRepository $offerRepository): Response
+    {
+        return $this->render('offer/index.html.twig', [
+            'offers' => $offerRepository->findActiveOffers(),
         ]);
     }
 }

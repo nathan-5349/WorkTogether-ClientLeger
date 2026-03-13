@@ -6,11 +6,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Administrator;
-use App\Entity\Customer;
 use App\Entity\Technician;
 use App\Entity\Support;
 use App\Entity\Accountant;
-use App\Entity\User;
 use App\Entity\Company;
 use App\Entity\Particular;
 use App\Entity\Offer;
@@ -19,6 +17,7 @@ use App\Entity\Unit;
 use App\Entity\Intervention;
 use App\Enum\ReservationStatus;
 use App\Entity\Reservation;
+
 
 class AppFixtures extends Fixture
 {

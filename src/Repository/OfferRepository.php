@@ -40,4 +40,9 @@ class OfferRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findActiveOffers(): array
+    {
+        return $this->findBy(['isActive' => true]);
+    }
 }
