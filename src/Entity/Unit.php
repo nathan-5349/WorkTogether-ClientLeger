@@ -8,6 +8,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Bay;
 use App\Enum\UnitStatus;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\State\UnitProvider;
+
+#[ApiResource(
+    normalizationContext: ['groups' => ['unit:read']],
+    operations: [
+        new GetCollection(provider: UnitProvider::class),
+        new Get(provider: UnitProvider::class),
+    ]
+)]
 
 #[ORM\Entity(repositoryClass: UnitRepository::class)]
 class Unit
@@ -15,30 +28,51 @@ class Unit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['unit:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
     private ?int $position = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups(['unit:read','intervention:read'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'units')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['unit:read','intervention:read'])]
     private ?Bay $bay = null;
 
     #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'units')]
     private Collection $reservations;
 
     #[ORM\Column(type: 'string', enumType: UnitStatus::class)]
+    #[Groups(['unit:read'])]
     private UnitStatus $status = UnitStatus::Available;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['unit:read'])]
     private ?string $type = null;
+
+    #[ORM\ManyToMany(targetEntity: Intervention::class, mappedBy: 'units')]
+    private Collection $interventions;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['unit:read'])]
+    private ?int $powerConsumption = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['unit:read'])]
+    private ?float $temperature = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['unit:read'])]
+    private ?float $networkThroughput = null;
 
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
+        $this->interventions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,5 +156,68 @@ class Unit
     {
         $this->type = $type;
         return $this;
+    }
+
+    public function getInterventions(): Collection
+    {
+        return $this->interventions;
+    }
+
+    public function addIntervention(Intervention $intervention): static
+    {
+        if (!$this->interventions->contains($intervention)) {
+            $this->interventions->add($intervention);
+            $intervention->addUnit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervention(Intervention $intervention): static
+    {
+        if ($this->interventions->removeElement($intervention)) {
+            $intervention->removeUnit($this);
+        }
+
+        return $this;
+    }
+
+    public function getPowerConsumption(): ?int
+    {
+        return $this->powerConsumption;
+    }
+
+    public function setPowerConsumption(?int $powerConsumption): static
+    {
+        $this->powerConsumption = $powerConsumption;
+        return $this;
+    }
+
+    public function getTemperature(): ?float
+    {
+        return $this->temperature;
+    }
+
+    public function setTemperature(?float $temperature): static
+    {
+        $this->temperature = $temperature;
+        return $this;
+    }
+
+    public function getNetworkThroughput(): ?float
+    {
+        return $this->networkThroughput;
+    }
+
+    public function setNetworkThroughput(?float $networkThroughput): static
+    {
+        $this->networkThroughput = $networkThroughput;
+        return $this;
+    }
+
+    #[Groups(['unit:read','intervention:read'])]
+    public function getFullLocation(): string 
+    {
+        return ($this->bay ? $this->bay->getName() : 'N/A') . '-' . $this->name;
     }
 }

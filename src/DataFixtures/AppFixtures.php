@@ -16,6 +16,9 @@ use App\Entity\Particular;
 use App\Entity\Offer;
 use App\Entity\Bay;
 use App\Entity\Unit;
+use App\Entity\Intervention;
+use App\Enum\ResrevationStatus;
+use App\Entity\Reservation;
 
 class AppFixtures extends Fixture
 {
@@ -110,19 +113,41 @@ class AppFixtures extends Fixture
             $manager->persist($bay);
 
         for ($u = 1; $u <= 42; $u++) {
+            // On ajoute une référence à la première unité de la première baie pour pouvoir l'utiliser dans les tests fonctionnels
             $unit = new Unit();
             $unit->setName(sprintf('U%02d', $u)); 
             $unit->setPosition($u);
             $unit->setBay($bay);
+            $unit->setPowerConsumption(rand(100, 500));
+            $unit->setTemperature(rand(18, 26) + (rand(0, 9) / 10));
+            $unit->setNetworkThroughput(rand(1, 10));
+            if ($b === 1 && $u === 1) {
+                $this->addReference('unit-first', $unit);
+            }
             $manager->persist($unit);
             }
-        }   
+        }
 
+        $reservation = new Reservation();
+        $reservation->setBeginDate(new \DateTimeImmutable('2026-03-01'));
+        $reservation->setFinishDate(new \DateTimeImmutable('2026-04-01'));
+        $reservation->setCustomer($particular);
+        $reservation->addUnit($this->getReference('unit-first', Unit::class));
+
+        $intervention = new Intervention();
+        $intervention->setType('incident');
+        $intervention->setDescription('Panne électrique sur le serveur');
+        $intervention->setBeginDate(new \DateTime('2026-03-01 08:00:00'));
+        $intervention->setFinishDate(new \DateTime('2026-03-01 10:00:00'));
+        $intervention->addUnit($this->getReference('unit-first', Unit::class));
+        
         // --- Persistance des utilisateurs ---
         $manager->persist($administrator);
         $manager->persist($particular);
         $manager->persist($company);
         $manager->persist($technician);
+        $manager->persist($reservation);
+        $manager->persist($intervention);
         $manager->flush();
     }
 }
