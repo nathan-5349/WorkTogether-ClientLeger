@@ -24,19 +24,32 @@ class Ticket
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private ?\DateTime $OpenDate = null;
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: true)]
     private ?\DateTime $CloseDate = null;
 
     #[ORM\Column(type: 'string', enumType: TicketStatus::class)]
     private TicketStatus $status = TicketStatus::Open;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    // Créateur du ticket
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private ?Customer $customer = null;
+
+    // Techniciens qui travaillent sur le ticket
+    #[ORM\ManyToOne(targetEntity: Technician::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection $technicians;
+
+    // Support qui assigne le ticket
+    #[ORM\ManyToOne(targetEntity: Support::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Support $support = null;
+
 
     public function __construct()
     {
-        $this->technician = new ArrayCollection();
+        $this->OpenDate = new \DateTime();
+        $this->technicians = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,14 +105,52 @@ class Ticket
         return $this;
     }
 
-    public function getStatus(): SupportStatus
+    public function getStatus(): TicketStatus
     {
         return $this->status;
     }
     
-    public function setStatus(SupportStatus $status): static
+    public function setStatus(TicketStatus $status): static
     {
         $this->status = $status;
+        return $this;
+    }
+
+    public function getCustomer(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setCustomer(?User $user): static
+    {
+        $this->user = $user;
+    }
+
+    public function getTechnicians(): Collection
+    {
+        return $this->technicians;
+    }
+
+    public function addTechnician(Technician $technician): static
+    {
+        $this->technicians->add($technician);
+        return $this;
+    }
+
+    public function removeTechnician(Technician $technician): static
+    {
+        $this->technicians->removeElement($technician);
+        return $this;
+    }
+
+    public function getSupport(): ?Support
+    {
+        return $this->support;
+    }
+
+    public function setSupport(?Support $support): static
+    {
+        $this->support = $support;
         return $this;
     }
 }

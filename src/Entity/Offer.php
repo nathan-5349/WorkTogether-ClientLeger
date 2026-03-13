@@ -24,6 +24,15 @@ class Offer
 
     #[ORM\Column]
     private ?int $price = null;
+    
+    #[ORM\Column]
+    private int $version = 1;
+
+    #[ORM\Column]
+    private bool $isActive = true;
+
+    #[ORM\Column]
+    private ?\DateImmutable $createdAt = null;
 
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'offer')]
     private Collection $reservations;
@@ -67,6 +76,36 @@ class Offer
         return $this->price;
     }
 
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
+
+    public function setVersion(int $version): void
+    {
+        $this->version = $version;
+    }
+
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function getCreatedAt(): ?\DateImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
     public function setPrice(int $price): static
     {
         $this->price = $price;
@@ -78,4 +117,5 @@ class Offer
     {
         return $this->reservations;
     }
+    
 }

@@ -17,7 +17,7 @@ use App\Entity\Offer;
 use App\Entity\Bay;
 use App\Entity\Unit;
 use App\Entity\Intervention;
-use App\Enum\ResrevationStatus;
+use App\Enum\ReservationStatus;
 use App\Entity\Reservation;
 
 class AppFixtures extends Fixture
@@ -97,14 +97,18 @@ class AppFixtures extends Fixture
             ['Offre Entreprise', 42, 2940],
         ];
 
-        foreach ($offers as [$offerName, $nbUnit, $price]) {
+        $firstOffer = null;
+        foreach ($offers as $index => [$offerName, $nbUnit, $price]) {
             $offer = new Offer();
             $offer->setName($offerName)
                   ->setNbUnit($nbUnit)
                   ->setPrice($price);
             $manager->persist($offer);
+            if ($index === 0) {
+                $this->addReference('offer-first', $offer);
+            }
         }
-        
+
         // --- Création des baies et des unités ---
         for ($b = 1; $b <= 30; $b++) {
             $bay = new Bay();
@@ -131,8 +135,11 @@ class AppFixtures extends Fixture
         $reservation = new Reservation();
         $reservation->setBeginDate(new \DateTimeImmutable('2026-03-01'));
         $reservation->setFinishDate(new \DateTimeImmutable('2026-04-01'));
+        $reservation->setOffer($this->getReference('offer-first', Offer::class));
         $reservation->setCustomer($particular);
         $reservation->addUnit($this->getReference('unit-first', Unit::class));
+
+        // --- Création des interventions ---
 
         $intervention = new Intervention();
         $intervention->setType('incident');
