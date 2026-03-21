@@ -23,7 +23,7 @@ class Notice
 
     #[ORM\ManyToOne(inversedBy: 'notices')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private ?Customer $customer = null;
 
     public function getId(): ?int
     {
@@ -50,7 +50,17 @@ class Notice
     public function setNote(int $note): static
     {
         $this->note = $note;
+        return $this;
+    }   
 
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
         return $this;
     }
 }

@@ -6,6 +6,8 @@ use App\Repository\TicketRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Enum\TicketStatus;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket
@@ -36,14 +38,14 @@ class Ticket
     private ?Customer $customer = null;
 
     // Techniciens qui travaillent sur le ticket
-    #[ORM\ManyToOne(targetEntity: Technician::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToMany(targetEntity: Technician::class)]
+    #[ORM\JoinTable(name: 'ticket_technician')]
     private Collection $technicians;
 
     // Support qui assigne le ticket
-    #[ORM\ManyToOne(targetEntity: Support::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Support $support = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $assignedBy = null;
 
 
     public function __construct()
@@ -98,7 +100,7 @@ class Ticket
         return $this->CloseDate;
     }
 
-    public function setCloseDate(\DateTime $CloseDate): static
+    public function setCloseDate(?\DateTime $CloseDate): static
     {
         $this->CloseDate = $CloseDate;
 
@@ -116,14 +118,15 @@ class Ticket
         return $this;
     }
 
-    public function getCustomer(): ?User
+    public function getCustomer(): ?Customer
     {
-        return $this->user;
+        return $this->customer;
     }
-
-    public function setCustomer(?User $user): static
+    
+    public function setCustomer(?Customer $customer): static
     {
-        $this->user = $user;
+        $this->customer = $customer;
+        return $this;
     }
 
     public function getTechnicians(): Collection
@@ -143,14 +146,13 @@ class Ticket
         return $this;
     }
 
-    public function getSupport(): ?Support
+    public function getAssignedBy(): ?User
     {
-        return $this->support;
+        return $this->assignedBy;
     }
-
-    public function setSupport(?Support $support): static
+    public function setAssignedBy(?User $assignedBy): static
     {
-        $this->support = $support;
+        $this->assignedBy = $assignedBy;
         return $this;
     }
 }
