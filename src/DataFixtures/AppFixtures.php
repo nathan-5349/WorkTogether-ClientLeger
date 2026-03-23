@@ -158,6 +158,7 @@ class AppFixtures extends Fixture
                 $this->addReference('offer-first', $offer);
             }
         }
+        $activeOffers[1] -> setVersion(2);
 
         // Simulation d'une offre modifiée — ancienne version inactive
         $oldOffer = new Offer();
@@ -188,8 +189,7 @@ class AppFixtures extends Fixture
                      ->setBay($bay)
                      ->setPowerConsumption(rand(100, 500))
                      ->setTemperature(rand(18, 26) + (rand(0, 9) / 10))
-                     ->setNetworkThroughput(rand(1, 10))
-                     ->setStatus($unitStatuses[array_rand($unitStatuses)]);
+                     ->setNetworkThroughput(rand(1, 10));
                 if ($b === 1 && $u === 1) $this->addReference('unit-1-1', $unit);
                 if ($b === 1 && $u === 2) $this->addReference('unit-1-2', $unit);
                 if ($b === 2 && $u === 1) $this->addReference('unit-2-1', $unit);
@@ -218,6 +218,9 @@ class AppFixtures extends Fixture
                         ->setOffer($offer)
                         ->setStatus($status)
                         ->addUnit($this->getReference($unitRef, Unit::class));
+                        if ($status === ReservationStatus::Confirmed) {
+                            $this->getReference($unitRef, Unit::class)->setStatus(UnitStatus::Unavailable); // ✅
+                        }
             $manager->persist($reservation);
         }
 

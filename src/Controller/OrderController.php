@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Customer;
 use App\Repository\ReservationRepository;
+use App\Enum\UnitStatus;
 
 final class OrderController extends AbstractController
 {
@@ -56,6 +57,7 @@ final class OrderController extends AbstractController
             $units = $unitRepository->findAvailableUnits($offer->getNbUnit());
             foreach ($units as $unit) {
                 $reservation->addUnit($unit);
+                $unit->setStatus(UnitStatus::Unavailable);
             }
 
             $em->persist($reservation);

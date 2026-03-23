@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Unit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Enum\UnitStatus;
 
 /**
  * @extends ServiceEntityRepository<Unit>
@@ -47,8 +48,9 @@ class UnitRepository extends ServiceEntityRepository
             ->leftJoin('u.reservations', 'r')
             ->where('r.id IS NULL OR r.finishDate < :now')
             ->setParameter('now', new \DateTimeImmutable())
+            ->andWhere('u.status = :status')
+            ->setParameter('status', UnitStatus::Available)
             ->setMaxResults($nbUnits);            
-
         return $qb->getQuery()->getResult();
     }
 }
