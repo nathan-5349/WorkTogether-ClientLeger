@@ -1,35 +1,36 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Modifier mon profil{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4">Modifier mon profil</h1>
-    {{ form_start(form) }}
-        <div class="row">
-            <div class="col-md-6">
+<div class="wt-container">
+    <div style="max-width:620px; margin:0 auto; padding:3.5rem 0;">
+        <span class="wt-label">Compte</span>
+        <h1 class="wt-h1" style="font-size:1.8rem; margin-bottom:2rem;">Modifier mon profil</h1>
+
+        <div style="background:var(--glass); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); border:1px solid var(--border); border-radius:var(--r-lg); padding:2rem;">
+            {{ form_start(form) }}
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 1.25rem;">
                 {{ form_row(form.firstName) }}
-            </div>
-            <div class="col-md-6">
                 {{ form_row(form.name) }}
             </div>
+            {{ form_row(form.email) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.adress) }}
+            {{ form_row(form.invoiceAdress) }}
+            {% if user.isParticular %}
+                {{ form_row(form.gender) }}
+            {% else %}
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 1.25rem;">
+                    {{ form_row(form.siret) }}
+                    {{ form_row(form.companyName) }}
+                </div>
+            {% endif %}
+            <div style="display:flex; gap:.75rem; margin-top:1.5rem;">
+                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                <a href="{{ path('app_customer_profile') }}" class="btn btn-ghost">Annuler</a>
+            </div>
+            {{ form_end(form) }}
         </div>
-        {{ form_row(form.email) }}
-        {{ form_row(form.phone) }}
-        {{ form_row(form.adress) }}
-        {{ form_row(form.invoiceAdress) }}
-        {% if user.isParticular %}
-            {{ form_row(form.gender) }}
-        {% else %}
-            {{ form_row(form.siret) }}
-            {{ form_row(form.companyName) }}
-        {% endif %}
-        <button type="submit" class="btn btn-success w-100 mt-3">
-            Sauvegarder les modifications
-        </button>
-    {{ form_end(form) }}
-    <a href="{{ path('app_customer_profile') }}" class="btn btn-secondary w-100 mt-2">
-        Annuler
-    </a>
+    </div>
 </div>
 {% endblock %}

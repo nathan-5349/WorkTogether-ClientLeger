@@ -1,23 +1,33 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Inscription Particulier{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h1 class="text-center mb-4">Inscription Particulier</h1>
+<div class="wt-container">
+    <div style="max-width:580px; margin:0 auto; padding:3.5rem 0;">
+        <span class="wt-label">Inscription · Particulier</span>
+        <h1 class="wt-h1" style="font-size:1.8rem; margin-bottom:2rem;">Créer mon compte</h1>
+
+        <div style="background:var(--glass); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); border:1px solid var(--border); border-radius:var(--r-lg); padding:2rem;">
             {{ form_start(form) }}
-                {{ form_widget(form) }}
-                <button type="submit" class="btn btn-primary w-100 mt-3">
-                    S'inscrire
-                </button>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 1.25rem;">
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.name) }}
+            </div>
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.adress) }}
+            {{ form_row(form.invoiceAdress) }}
+            {{ form_row(form.gender) }}
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:.8rem; margin-top:1.25rem;">
+                Créer mon compte
+            </button>
             {{ form_end(form) }}
-            <p class="text-center mt-3">
-                Déjà un compte ? 
-                <a href="{{ path('app_login') }}">Se connecter</a>
-            </p>
         </div>
+
+        <p style="text-align:center; margin-top:1.25rem; font-family:var(--mono); font-size:.72rem; color:var(--muted);">
+            Déjà un compte ? <a href="{{ path('app_login') }}" style="color:var(--cyan);">Se connecter</a>
+        </p>
     </div>
 </div>
 {% endblock %}

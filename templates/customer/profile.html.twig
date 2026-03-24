@@ -1,29 +1,114 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Mon Profil{% endblock %}
 
-
 {% block body %}
-<div class="container mt-5">
-    <p>Prénom : {{ user.firstName }} </p>
-    <p>Nom : {{ user.name }} </p>
-    <p>Email : {{ user.email }} </p>
-    <p>Téléphone : {{ user.phone }} </p>
-    <p>Adresse : {{ user.adress }} </p>
-    <p>Adresse de facturation : {{ user.invoiceAdress }} </p>
-    {% if user.isParticular %}
-        <p>Civilité : {{ user.gender }} </p>
-    {% else %}
-        <p>Siret : {{ user.siret }} </p>
-        <p>Nom de l'entreprise : {{ user.companyName }} </p>
-    {% endif %}
-</div>
-<div>
-    <a href="{{ path('app_customer_edit') }}" class="btn btn-primary mt-3">
-    Modifier mes informations
-    </a>
-    <a href="{{ path('app_customer_change_password') }}" class="btn btn-primary mt-3">
-    Modifier mon mot de passe
-    </a>
+<style>
+    .profile-header {
+        display: flex; align-items: flex-start; justify-content: space-between;
+        padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem;
+        flex-wrap: wrap; gap: 1.25rem;
+    }
+    .profile-avatar {
+        width: 56px; height: 56px; border-radius: 50%;
+        background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(6,214,247,.2));
+        border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.4rem; font-weight: 800; color: var(--cyan);
+        margin-bottom: .75rem;
+    }
+    .profile-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+    .profile-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.25rem;
+    }
+    .profile-section {
+        background: var(--glass);
+        backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+    }
+    .profile-section__head {
+        padding: .9rem 1.4rem; border-bottom: 1px solid var(--border);
+        font-family: var(--mono); font-size: .68rem;
+        text-transform: uppercase; letter-spacing: .12em; color: var(--cyan);
+    }
+    .profile-field {
+        padding: .85rem 1.4rem; border-bottom: 1px solid var(--border);
+        display: flex; flex-direction: column; gap: .2rem;
+    }
+    .profile-field:last-child { border-bottom: none; }
+    .profile-field__label {
+        font-family: var(--mono); font-size: .65rem; text-transform: uppercase;
+        letter-spacing: .1em; color: var(--muted);
+    }
+    .profile-field__val { font-size: .9rem; color: var(--text); }
+</style>
+
+<div class="wt-container wt-page">
+    <div class="profile-header">
+        <div>
+            <div class="profile-avatar">{{ app.user.firstName|slice(0,1)|upper }}</div>
+            <span class="wt-label">Compte client</span>
+            <h1 class="wt-h1" style="font-size:1.8rem;">Mon profil</h1>
+        </div>
+        <div class="profile-actions">
+            <a href="{{ path('app_customer_edit') }}" class="btn btn-primary">Modifier</a>
+            <a href="{{ path('app_customer_change_password') }}" class="btn btn-ghost">Mot de passe</a>
+        </div>
+    </div>
+
+    <div class="profile-grid">
+        <div class="profile-section">
+            <div class="profile-section__head">Identité</div>
+            <div class="profile-field">
+                <span class="profile-field__label">Prénom</span>
+                <span class="profile-field__val">{{ user.firstName }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="profile-field__label">Nom</span>
+                <span class="profile-field__val">{{ user.name }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="profile-field__label">Email</span>
+                <span class="profile-field__val">{{ user.email }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="profile-field__label">Téléphone</span>
+                <span class="profile-field__val">{{ user.phone }}</span>
+            </div>
+            {% if user.isParticular %}
+            <div class="profile-field">
+                <span class="profile-field__label">Civilité</span>
+                <span class="profile-field__val">{{ user.gender }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="profile-section">
+            <div class="profile-section__head">Adresses</div>
+            <div class="profile-field">
+                <span class="profile-field__label">Adresse postale</span>
+                <span class="profile-field__val">{{ user.adress }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="profile-field__label">Adresse de facturation</span>
+                <span class="profile-field__val">{{ user.invoiceAdress }}</span>
+            </div>
+        </div>
+
+        {% if not user.isParticular %}
+        <div class="profile-section">
+            <div class="profile-section__head">Entreprise</div>
+            <div class="profile-field">
+                <span class="profile-field__label">Raison sociale</span>
+                <span class="profile-field__val">{{ user.companyName }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="profile-field__label">SIRET</span>
+                <span class="profile-field__val">{{ user.siret }}</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

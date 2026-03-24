@@ -1,40 +1,147 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Vos réservations{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-{% if reservations is empty %}
-    <p class="text-muted">Vous n'avez pas encore de réservation. </p>
-    <a href="{{ path('app_customer_dashboard') }}" class="btn btn-primary mt-3">
-    Accueil
-    </a>
-    <a href="{{ path('app_offers') }}" class="btn btn-primary mt-3">
-    Première réservation
-    </a>
-{% else %}
-    <p>Vos réservations :</p>
+<style>
+    .res-header {
+        display: flex; align-items: flex-end; justify-content: space-between;
+        padding: 3.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem;
+        flex-wrap: wrap; gap: 1rem;
+    }
+    .res-empty { text-align: center; padding: 5rem 2rem; }
+    .res-empty__icon { font-size: 3rem; margin-bottom: 1.2rem; }
+    .res-empty__title { font-size: 1.4rem; font-weight: 700; letter-spacing: -.03em; margin-bottom: .5rem; }
+    .res-empty__sub   { color: var(--muted); margin-bottom: 2rem; font-weight: 300; }
 
-    {% for reservation in reservations %}
-    <p>Reservation {{ loop.index }}</p>
-    <p>Offre Choisie : {{ reservation.offer.name}}</p>
-    <p>Prix : {{ reservation.offer.price}}</p>
-    <p>Date de début : {{ reservation.beginDate|date('d/m/Y')}}</p>
-    <p>Date de fin : {{ reservation.finishDate|date('d/m/Y')}}</p>
-    <p>Statut : {{ reservation.status.value}}</p>
-    {% for unit in reservation.units %}
-    <p>{{ unit.name }} - Baie {{ unit.bay.name }}</p>
-    <a href="{{ path('app_customer_unit_detail', {'id': unit.id}) }}" class="btn btn-sm btn-secondary">
-        Gérer
-    </a>
-    {% endfor %}
-    {% endfor %}
-    <a href="{{ path('app_customer_dashboard') }}" class="btn btn-primary mt-3">
-    Accueil
-    </a>
-    <a href="{{ path('app_offers') }}" class="btn btn-primary mt-3">
-    Nouvelle réservation
-    </a>
-{% endif %}
+    .res-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .res-block {
+        background: var(--glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+        transition: border-color .2s;
+    }
+    .res-block:hover { border-color: var(--border-h); }
+
+    .res-block__head {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 1.25rem 1.75rem; border-bottom: 1px solid var(--border);
+        flex-wrap: wrap; gap: .75rem;
+    }
+    .res-block__id {
+        font-family: var(--mono); font-size: .67rem; letter-spacing: .1em;
+        text-transform: uppercase; color: var(--muted); margin-bottom: .2rem;
+    }
+    .res-block__offer { font-weight: 700; font-size: 1rem; letter-spacing: -.02em; }
+
+    .res-block__meta {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 1px; background: var(--border);
+    }
+    .res-block__meta-item {
+        background: rgba(7,6,15,.5); padding: .9rem 1.4rem;
+    }
+    .res-block__meta-label {
+        font-family: var(--mono); font-size: .63rem; letter-spacing: .1em;
+        text-transform: uppercase; color: var(--muted); margin-bottom: .25rem;
+    }
+    .res-block__meta-val {
+        font-family: var(--mono); font-size: .85rem; font-weight: 500; color: var(--text);
+    }
+
+    .units-grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 1px; background: var(--border);
+    }
+    .unit-row {
+        background: rgba(7,6,15,.4); padding: .9rem 1.4rem;
+        display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+    }
+    .unit-row__info { display: flex; align-items: center; gap: .65rem; }
+    .unit-row__dot {
+        width: 7px; height: 7px; border-radius: 50%; background: var(--cyan);
+        box-shadow: 0 0 6px var(--cyan); flex-shrink: 0;
+    }
+    .unit-row__name { font-family: var(--mono); font-size: .8rem; font-weight: 500; }
+    .unit-row__bay  { font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+</style>
+
+<div class="wt-container wt-page">
+    <div class="res-header">
+        <div>
+            <span class="wt-label">Infrastructure</span>
+            <h1 class="wt-h1" style="font-size:1.8rem;">Mes réservations</h1>
+        </div>
+        <a href="{{ path('app_offers') }}" class="btn btn-primary">+ Nouvelle réservation</a>
+    </div>
+
+    {% if reservations is empty %}
+    <div class="res-empty">
+        <div class="res-empty__icon">🖥</div>
+        <p class="res-empty__title">Aucune réservation</p>
+        <p class="res-empty__sub">Vous n'avez pas encore de réservation active.</p>
+        <div style="display:flex; gap:1rem; justify-content:center;">
+            <a href="{{ path('app_offers') }}" class="btn btn-primary">Découvrir les offres</a>
+            <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">Accueil</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="res-list">
+        {% for reservation in reservations %}
+        <div class="res-block">
+            <div class="res-block__head">
+                <div>
+                    <p class="res-block__id">Réservation #{{ loop.index }}</p>
+                    <p class="res-block__offer">{{ reservation.offer.name }}</p>
+                </div>
+                {% set s = reservation.status.value %}
+                {% if s == 'Confirmée' %}
+                    <span class="wt-badge wt-badge--ok">{{ s }}</span>
+                {% elseif s == 'En attente' %}
+                    <span class="wt-badge wt-badge--warn">{{ s }}</span>
+                {% else %}
+                    <span class="wt-badge wt-badge--off">{{ s }}</span>
+                {% endif %}
+            </div>
+
+            <div class="res-block__meta">
+                <div class="res-block__meta-item">
+                    <p class="res-block__meta-label">Début</p>
+                    <p class="res-block__meta-val">{{ reservation.beginDate|date('d/m/Y') }}</p>
+                </div>
+                <div class="res-block__meta-item">
+                    <p class="res-block__meta-label">Fin</p>
+                    <p class="res-block__meta-val">{{ reservation.finishDate|date('d/m/Y') }}</p>
+                </div>
+                <div class="res-block__meta-item">
+                    <p class="res-block__meta-label">Tarif</p>
+                    <p class="res-block__meta-val">{{ reservation.offer.price }} €/mois</p>
+                </div>
+                <div class="res-block__meta-item">
+                    <p class="res-block__meta-label">Unités</p>
+                    <p class="res-block__meta-val">{{ reservation.units|length }}</p>
+                </div>
+            </div>
+
+            <div class="units-grid">
+                {% for unit in reservation.units %}
+                <div class="unit-row">
+                    <div class="unit-row__info">
+                        <div class="unit-row__dot"></div>
+                        <div>
+                            <div class="unit-row__name">{{ unit.name }}</div>
+                            <div class="unit-row__bay">Baie {{ unit.bay.name }}</div>
+                        </div>
+                    </div>
+                    <a href="{{ path('app_customer_unit_detail', {'id': unit.id}) }}" class="btn btn-ghost btn-sm">Gérer</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div style="margin-top:2rem;">
+        <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">← Accueil</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

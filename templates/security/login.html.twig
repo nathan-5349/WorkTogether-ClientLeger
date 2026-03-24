@@ -1,38 +1,89 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <form method="post" action="{{ path('app_login') }}">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+<style>
+    .login-wrap {
+        min-height: calc(100vh - 68px);
+        display: flex; align-items: center; justify-content: center; padding: 2rem;
+    }
+    .login-box { width: 100%; max-width: 400px; }
+    .login-brand {
+        text-align: center; margin-bottom: 2.5rem;
+    }
+    .login-brand__icon {
+        width: 48px; height: 48px; border-radius: var(--r-md); margin: 0 auto 1rem;
+        background: linear-gradient(135deg, var(--violet), var(--cyan));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem; box-shadow: 0 0 24px rgba(139,92,246,.4);
+    }
+    .login-brand__title { font-size: 1.5rem; font-weight: 900; letter-spacing: -.04em; }
+    .login-brand__sub   { color: var(--muted); font-size: .88rem; margin-top: .35rem; font-weight: 300; }
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
+    .login-card {
+        background: var(--glass);
+        backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--border); border-radius: var(--r-lg); padding: 2.25rem;
+    }
+    .login-footer {
+        text-align: center; margin-top: 1.25rem;
+        font-family: var(--mono); font-size: .72rem; color: var(--muted);
+    }
+    .login-footer a { color: var(--cyan); text-decoration: none; }
+    .login-footer a:hover { text-decoration: underline; }
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+    .login-field { margin-bottom: 1.2rem; }
+    .login-field label {
+        display: block; font-family: var(--mono); font-size: .68rem;
+        letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem;
+    }
+    .login-field input {
+        width: 100%; background: rgba(255,255,255,.05); border: 1px solid var(--border);
+        border-radius: var(--r-sm); color: var(--text); padding: .75rem 1rem;
+        font-family: var(--mono); font-size: .84rem; outline: none;
+        transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .login-field input:focus {
+        border-color: var(--violet); background: rgba(139,92,246,.07);
+        box-shadow: 0 0 0 3px rgba(139,92,246,.18);
+    }
+</style>
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
+<div class="login-wrap">
+    <div class="login-box">
+        <div class="login-brand">
+            <div class="login-brand__icon">⬡</div>
+            <h1 class="login-brand__title">Bienvenue</h1>
+            <p class="login-brand__sub">Connectez-vous à votre espace WorkTogether</p>
+        </div>
 
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
-            </div>
-        #}
+        <div class="login-card">
+            {% if error %}
+                <div style="background:rgba(244,63,142,.08); border:1px solid rgba(244,63,142,.25); color:#fda4c6; padding:.85rem 1rem; border-radius:var(--r-sm); font-family:var(--mono); font-size:.78rem; margin-bottom:1.25rem;">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
+            <form method="post" action="{{ path('app_login') }}">
+                <div class="login-field">
+                    <label for="username">Email</label>
+                    <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
+                </div>
+                <div class="login-field" style="margin-bottom:1.75rem;">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" name="_password" id="password" autocomplete="current-password" required>
+                </div>
+                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+                <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:.8rem;">
+                    Se connecter
+                </button>
+            </form>
+        </div>
+
+        <div class="login-footer">
+            Pas encore de compte ?
+            <a href="{{ path('app_registration') }}">S'inscrire gratuitement</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
