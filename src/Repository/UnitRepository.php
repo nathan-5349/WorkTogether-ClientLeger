@@ -53,4 +53,30 @@ class UnitRepository extends ServiceEntityRepository
             ->setMaxResults($nbUnits);            
         return $qb->getQuery()->getResult();
     }
+/*
+    public function findUnitsInSameBay(int $nbUnits): array
+{
+    // 1. On récupère toutes les baies
+    $bays = $this->_em->getRepository(Bay::class)->findAll();
+
+    foreach ($bays as $bay) {
+        // 2. On cherche les unités disponibles dans CETTE baie précise
+        $units = $this->createQueryBuilder('u')
+            ->where('u.bay = :bay')
+            ->andWhere('u.status = :status')
+            ->setParameter('bay', $bay)
+            ->setParameter('status', UnitStatus::Available)
+            ->setMaxResults($nbUnits)
+            ->getQuery()
+            ->getResult();
+
+        // 3. Si on en a assez dans cette baie, on les retourne
+        if (count($units) >= $nbUnits) {
+            return $units;
+        }
+    }
+
+    // Si aucune baie n'a assez de place d'un seul bloc
+    return []; 
+}*/
 }
