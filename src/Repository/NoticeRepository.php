@@ -40,4 +40,16 @@ class NoticeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findOneBynotice(notice $notice): ?Notice
+    {
+        return $this->findOneBy(['notice' => $notice]);
+    }
+
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('n')
+            ->getQuery()
+            ->getResult();
+    }
 }

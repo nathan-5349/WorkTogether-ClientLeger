@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Notice;
 use App\Entity\Reservation;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 abstract class Customer extends User
@@ -28,11 +29,19 @@ abstract class Customer extends User
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Reservation::class)]
     private Collection $reservations;
 
+    #[ORM\Column(length: 200)]
+    private ?string $authKey = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $feedbackMake = 0;
+
     public function __construct()
     {
         $this->notices = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }
+
+    
 
     public function getId(): ?int
     {
@@ -126,5 +135,29 @@ abstract class Customer extends User
     public function isParticular(): bool
     {
         return $this instanceof Particular;
+    }
+
+    public function generateAuthKey(User $user, int $id): void
+    {
+        $this->authKey = $user->getName() 
+            . $user->getFirstname() 
+            . $id 
+            . $user->getId();
+    }
+
+    public function getAuthKey(): ?string
+    {
+        return $this->authKey;
+    }
+    
+    public function getFeedbackMake(): ?string
+    {
+        return $this->feedBackMake;
+    }
+
+        public function setFeedbackMake(?int $feedbackMake): static
+    {
+        $this->feedbackMake = $feedbackMake;
+        return $this;
     }
 }
