@@ -44,71 +44,72 @@
     .profile-field__val { font-size: .9rem; color: var(--text); }
 </style>
 
-<div class="wt-container wt-page">
-    <div class="profile-header">
-        <div>
-            <div class="profile-avatar">{{ app.user.firstName|slice(0,1)|upper }}</div>
-            <span class="wt-label">Compte client</span>
-            <h1 class="wt-h1" style="font-size:1.8rem;">Mon profil</h1>
+    {# profile #}
+    <div class="wt-container wt-page">
+        <div class="profile-header">
+            <div>
+                <div class="profile-avatar">{{ app.user.firstName|slice(0,1)|upper }}</div>
+                <span class="wt-label">{{ 'profile.label'|trans }}</span>
+                <h1 class="wt-h1" style="font-size:1.8rem;">{{ 'profile.title'|trans }}</h1>
+            </div>
+            <div class="profile-actions">
+                <a href="{{ path('app_customer_edit') }}" class="btn btn-primary">{{ 'profile.edit'|trans }}</a>
+                <a href="{{ path('app_customer_change_password') }}" class="btn btn-ghost">{{ 'profile.password'|trans }}</a>
+            </div>
         </div>
-        <div class="profile-actions">
-            <a href="{{ path('app_customer_edit') }}" class="btn btn-primary">Modifier</a>
-            <a href="{{ path('app_customer_change_password') }}" class="btn btn-ghost">Mot de passe</a>
-        </div>
-    </div>
 
-    <div class="profile-grid">
-        <div class="profile-section">
-            <div class="profile-section__head">Identité</div>
-            <div class="profile-field">
-                <span class="profile-field__label">Prénom</span>
-                <span class="profile-field__val">{{ user.firstName }}</span>
+        <div class="profile-grid">
+            <div class="profile-section">
+                <div class="profile-section__head">{{ 'profile.identity'|trans }}</div>
+                <div class="profile-field">
+                    <span class="profile-field__label">{{ 'profile.firstName'|trans }}</span>
+                    <span class="profile-field__val">{{ user.firstName }}</span>
+                </div>
+                <div class="profile-field">
+                    <span class="profile-field__label">{{ 'profile.lastName'|trans }}</span>
+                    <span class="profile-field__val">{{ user.name }}</span>
+                </div>
+                <div class="profile-field">
+                    <span class="profile-field__label">{{ 'profile.email'|trans }}</span>
+                    <span class="profile-field__val">{{ user.email }}</span>
+                </div>
+                <div class="profile-field">
+                    <span class="profile-field__label">{{ 'profile.phone'|trans }}</span>
+                    <span class="profile-field__val">{{ user.phone }}</span>
+                </div>
+                {% if user.isParticular %}
+                    <div class="profile-field">
+                        <span class="profile-field__label">{{ 'profile.civility'|trans }}</span>
+                        <span class="profile-field__val">{{ user.gender }}</span>
+                    </div>
+                {% endif %}
             </div>
-            <div class="profile-field">
-                <span class="profile-field__label">Nom</span>
-                <span class="profile-field__val">{{ user.name }}</span>
+
+            <div class="profile-section">
+                <div class="profile-section__head">{{ 'profile.addresses'|trans }}</div>
+                <div class="profile-field">
+                    <span class="profile-field__label">{{ 'profile.address'|trans }}</span>
+                    <span class="profile-field__val">{{ user.adress }}</span>
+                </div>
+                <div class="profile-field">
+                    <span class="profile-field__label">{{ 'profile.invoiceAddress'|trans }}</span>
+                    <span class="profile-field__val">{{ user.invoiceAdress }}</span>
+                </div>
             </div>
-            <div class="profile-field">
-                <span class="profile-field__label">Email</span>
-                <span class="profile-field__val">{{ user.email }}</span>
-            </div>
-            <div class="profile-field">
-                <span class="profile-field__label">Téléphone</span>
-                <span class="profile-field__val">{{ user.phone }}</span>
-            </div>
-            {% if user.isParticular %}
-            <div class="profile-field">
-                <span class="profile-field__label">Civilité</span>
-                <span class="profile-field__val">{{ user.gender }}</span>
-            </div>
+
+            {% if not user.isParticular %}
+                <div class="profile-section">
+                    <div class="profile-section__head">{{ 'profile.company'|trans }}</div>
+                    <div class="profile-field">
+                        <span class="profile-field__label">{{ 'profile.companyName'|trans }}</span>
+                        <span class="profile-field__val">{{ user.companyName }}</span>
+                    </div>
+                    <div class="profile-field">
+                        <span class="profile-field__label">{{ 'profile.siret'|trans }}</span>
+                        <span class="profile-field__val">{{ user.siret }}</span>
+                    </div>
+                </div>
             {% endif %}
         </div>
-
-        <div class="profile-section">
-            <div class="profile-section__head">Adresses</div>
-            <div class="profile-field">
-                <span class="profile-field__label">Adresse postale</span>
-                <span class="profile-field__val">{{ user.adress }}</span>
-            </div>
-            <div class="profile-field">
-                <span class="profile-field__label">Adresse de facturation</span>
-                <span class="profile-field__val">{{ user.invoiceAdress }}</span>
-            </div>
-        </div>
-
-        {% if not user.isParticular %}
-        <div class="profile-section">
-            <div class="profile-section__head">Entreprise</div>
-            <div class="profile-field">
-                <span class="profile-field__label">Raison sociale</span>
-                <span class="profile-field__val">{{ user.companyName }}</span>
-            </div>
-            <div class="profile-field">
-                <span class="profile-field__label">SIRET</span>
-                <span class="profile-field__val">{{ user.siret }}</span>
-            </div>
-        </div>
-        {% endif %}
     </div>
-</div>
 {% endblock %}

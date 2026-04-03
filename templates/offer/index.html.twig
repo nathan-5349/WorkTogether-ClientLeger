@@ -50,30 +50,29 @@
     .offer-card__features li::before { content: '✓'; color: var(--cyan); font-weight: 700; font-size: .72rem; }
     .offer-card .btn { width: 100%; justify-content: center; margin-top: auto; }
 </style>
-
-<div class="wt-container wt-page">
-    <div class="offers-hero">
-        <span class="wt-label" style="justify-content:center; display:flex;">Colocation · Datacenter</span>
-        <h1 class="offers-hero__title grad-text">Choisissez votre offre</h1>
-        <p class="offers-hero__sub">Tous les forfaits incluent la supervision, la connectivité et la sécurité physique.</p>
-    </div>
-
-    <div class="offers-grid">
-        {% for offer in offers %}
-        <div class="offer-card {% if loop.index == 2 %}offer-card--featured{% endif %}">
-            {% if loop.index == 2 %}<div class="offer-card__badge">Populaire</div>{% endif %}
-            <div class="offer-card__name">{{ offer.name }}</div>
-            <div class="offer-card__price">{{ offer.price }}<span> €/mois</span></div>
-            <div class="offer-card__units"><strong>{{ offer.nbUnit }}</strong> unité{{ offer.nbUnit > 1 ? 's' : '' }}</div>
-            <ul class="offer-card__features">
-                <li>Monitoring temps réel</li>
-                <li>Bande passante dédiée</li>
-                <li>Redondance électrique</li>
-                <li>Support 24/7</li>
-            </ul>
-            <a href="{{ path('app_order', {'id': offer.id}) }}" class="btn btn-primary">Commander</a>
+    <div class="wt-container wt-page">
+        <div class="offers-hero">
+            <span class="wt-label" style="justify-content:center; display:flex;">{{ 'offers.label'|trans }}</span>
+            <h1 class="offers-hero__title grad-text">{{ 'offers.title'|trans }}</h1>
+            <p class="offers-hero__sub">{{ 'offers.sub'|trans }}</p>
         </div>
-        {% endfor %}
+
+        <div class="offers-grid">
+            {% for offer in offers %}
+                <div class="offer-card {% if loop.index == 2 %}offer-card--featured{% endif %}">
+                    {% if loop.index == 2 %}<div class="offer-card__badge">{{ 'offers.popular'|trans }}</div>{% endif %}
+                    <div class="offer-card__name">{{ offer.name }}</div>
+                    <div class="offer-card__price">{{ offer.price }}<span> {{ 'offers.perMonth'|trans }}</span></div>
+                    <div class="offer-card__units"><strong>{{ offer.nbUnit }}</strong> {{ 'offers.unit'|trans }}{{ offer.nbUnit > 1 ? 's' : '' }}</div>
+                    <ul class="offer-card__features">
+                        <li>{{ 'offers.feature1'|trans }}</li>
+                        <li>{{ 'offers.feature2'|trans }}</li>
+                        <li>{{ 'offers.feature3'|trans }}</li>
+                        <li>{{ 'offers.feature4'|trans }}</li>
+                    </ul>
+                    <a href="{{ path('app_order', {'id': offer.id}) }}" class="btn btn-primary">{{ 'offers.order'|trans }}</a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
 {% endblock %}

@@ -61,39 +61,40 @@
     .dash-tile__desc  { font-size: .875rem; color: var(--muted); line-height: 1.6; flex: 1; font-weight: 300; }
 </style>
 
-<div class="wt-container wt-page">
-    <div class="dash-header">
-        <p class="dash-greeting">Bienvenue</p>
-        <h1 class="dash-name">{{ app.user.firstName }} {{ app.user.name }}</h1>
+    {# dashboard #}
+    <div class="wt-container wt-page">
+        <div class="dash-header">
+            <p class="dash-greeting">{{ 'dashboard.greeting'|trans }}</p>
+            <h1 class="dash-name">{{ app.user.firstName }} {{ app.user.name }}</h1>
+        </div>
+
+        <div class="dash-grid">
+            <a href="{{ path('app_customer_profile') }}" class="dash-tile">
+                <div class="dash-tile__icon">👤</div>
+                <div>
+                    <p class="dash-tile__label">{{ 'dashboard.tile1Label'|trans }}</p>
+                    <p class="dash-tile__title">{{ 'dashboard.tile1Title'|trans }}</p>
+                </div>
+                <p class="dash-tile__desc">{{ 'dashboard.tile1Desc'|trans }}</p>
+            </a>
+
+            <a href="{{ path('app_order_reservations') }}" class="dash-tile">
+                <div class="dash-tile__icon">🖥</div>
+                <div>
+                    <p class="dash-tile__label">{{ 'dashboard.tile2Label'|trans }}</p>
+                    <p class="dash-tile__title">{{ 'dashboard.tile2Title'|trans }}</p>
+                </div>
+                <p class="dash-tile__desc">{{ 'dashboard.tile2Desc'|trans }}</p>
+            </a>
+
+            <a href="{{ path('app_offers') }}" class="dash-tile">
+                <div class="dash-tile__icon">⚡</div>
+                <div>
+                    <p class="dash-tile__label">{{ 'dashboard.tile3Label'|trans }}</p>
+                    <p class="dash-tile__title">{{ 'dashboard.tile3Title'|trans }}</p>
+                </div>
+                <p class="dash-tile__desc">{{ 'dashboard.tile3Desc'|trans }}</p>
+            </a>
+        </div>
     </div>
-
-    <div class="dash-grid">
-        <a href="{{ path('app_customer_profile') }}" class="dash-tile">
-            <div class="dash-tile__icon">👤</div>
-            <div>
-                <p class="dash-tile__label">Compte</p>
-                <p class="dash-tile__title">Mon profil</p>
-            </div>
-            <p class="dash-tile__desc">Consultez et modifiez vos informations personnelles, adresses et données de facturation.</p>
-        </a>
-
-        <a href="{{ path('app_order_reservations') }}" class="dash-tile">
-            <div class="dash-tile__icon">🖥</div>
-            <div>
-                <p class="dash-tile__label">Infrastructure</p>
-                <p class="dash-tile__title">Mes réservations</p>
-            </div>
-            <p class="dash-tile__desc">Gérez vos unités de colocation, consultez les détails de chaque baie et suivez le statut.</p>
-        </a>
-
-        <a href="{{ path('app_offers') }}" class="dash-tile">
-            <div class="dash-tile__icon">⚡</div>
-            <div>
-                <p class="dash-tile__label">Catalogue</p>
-                <p class="dash-tile__title">Nouvelle réservation</p>
-            </div>
-            <p class="dash-tile__desc">Découvrez nos offres de colocation et choisissez le forfait adapté à votre infrastructure.</p>
-        </a>
-    </div>
-</div>
 {% endblock %}

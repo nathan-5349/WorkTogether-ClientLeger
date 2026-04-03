@@ -68,80 +68,79 @@
 <div class="wt-container wt-page">
     <div class="res-header">
         <div>
-            <span class="wt-label">Infrastructure</span>
-            <h1 class="wt-h1" style="font-size:1.8rem;">Mes réservations</h1>
+            <span class="wt-label">{{ 'reservations.label'|trans }}</span>
+            <h1 class="wt-h1" style="font-size:1.8rem;">{{ 'reservations.pageTitle'|trans }}</h1>
         </div>
-        <a href="{{ path('app_offers') }}" class="btn btn-primary">+ Nouvelle réservation</a>
+        <a href="{{ path('app_offers') }}" class="btn btn-primary">{{ 'reservations.newReservation'|trans }}</a>
     </div>
-
     {% if reservations is empty %}
-    <div class="res-empty">
-        <div class="res-empty__icon">🖥</div>
-        <p class="res-empty__title">Aucune réservation</p>
-        <p class="res-empty__sub">Vous n'avez pas encore de réservation active.</p>
-        <div style="display:flex; gap:1rem; justify-content:center;">
-            <a href="{{ path('app_offers') }}" class="btn btn-primary">Découvrir les offres</a>
-            <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">Accueil</a>
+        <div class="res-empty">
+            <div class="res-empty__icon">🖥</div>
+            <p class="res-empty__title">{{ 'reservations.emptyTitle'|trans }}</p>
+            <p class="res-empty__sub">{{ 'reservations.emptySub'|trans }}</p>
+            <div style="display:flex; gap:1rem; justify-content:center;">
+                <a href="{{ path('app_offers') }}" class="btn btn-primary">{{ 'reservations.discoverOffers'|trans }}</a>
+                <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">{{ 'reservations.home'|trans }}</a>
+            </div>
         </div>
-    </div>
     {% else %}
-    <div class="res-list">
-        {% for reservation in reservations %}
-        <div class="res-block">
-            <div class="res-block__head">
-                <div>
-                    <p class="res-block__id">Réservation #{{ loop.index }}</p>
-                    <p class="res-block__offer">{{ reservation.offer.name }}</p>
-                </div>
-                {% set s = reservation.status.value %}
-                {% if s == 'Confirmée' %}
-                    <span class="wt-badge wt-badge--ok">{{ s }}</span>
-                {% elseif s == 'En attente' %}
-                    <span class="wt-badge wt-badge--warn">{{ s }}</span>
-                {% else %}
-                    <span class="wt-badge wt-badge--off">{{ s }}</span>
-                {% endif %}
-            </div>
-
-            <div class="res-block__meta">
-                <div class="res-block__meta-item">
-                    <p class="res-block__meta-label">Début</p>
-                    <p class="res-block__meta-val">{{ reservation.beginDate|date('d/m/Y') }}</p>
-                </div>
-                <div class="res-block__meta-item">
-                    <p class="res-block__meta-label">Fin</p>
-                    <p class="res-block__meta-val">{{ reservation.finishDate|date('d/m/Y') }}</p>
-                </div>
-                <div class="res-block__meta-item">
-                    <p class="res-block__meta-label">Tarif</p>
-                    <p class="res-block__meta-val">{{ reservation.offer.price }} €/mois</p>
-                </div>
-                <div class="res-block__meta-item">
-                    <p class="res-block__meta-label">Unités</p>
-                    <p class="res-block__meta-val">{{ reservation.units|length }}</p>
-                </div>
-            </div>
-
-            <div class="units-grid">
-                {% for unit in reservation.units %}
-                <div class="unit-row">
-                    <div class="unit-row__info">
-                        <div class="unit-row__dot"></div>
+        <div class="res-list">
+            {% for reservation in reservations %}
+                <div class="res-block">
+                    <div class="res-block__head">
                         <div>
-                            <div class="unit-row__name">{{ unit.name }}</div>
-                            <div class="unit-row__bay">Baie {{ unit.bay.name }}</div>
+                            <p class="res-block__id">{{ 'reservations.reservation'|trans }} #{{ loop.index }}</p>
+                            <p class="res-block__offer">{{ reservation.offer.name }}</p>
+                        </div>
+                        {% set s = reservation.status.value %}
+                        {% if s == 'Confirmée' %}
+                            <span class="wt-badge wt-badge--ok">{{ s }}</span>
+                        {% elseif s == 'En attente' %}
+                            <span class="wt-badge wt-badge--warn">{{ s }}</span>
+                        {% else %}
+                            <span class="wt-badge wt-badge--off">{{ s }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="res-block__meta">
+                        <div class="res-block__meta-item">
+                            <p class="res-block__meta-label">{{ 'reservations.begin'|trans }}</p>
+                            <p class="res-block__meta-val">{{ reservation.beginDate|date('d/m/Y') }}</p>
+                        </div>
+                        <div class="res-block__meta-item">
+                            <p class="res-block__meta-label">{{ 'reservations.end'|trans }}</p>
+                            <p class="res-block__meta-val">{{ reservation.finishDate|date('d/m/Y') }}</p>
+                        </div>
+                        <div class="res-block__meta-item">
+                            <p class="res-block__meta-label">{{ 'reservations.price'|trans }}</p>
+                            <p class="res-block__meta-val">{{ reservation.offer.price }} €/mois</p>
+                        </div>
+                        <div class="res-block__meta-item">
+                            <p class="res-block__meta-label">{{ 'reservations.units'|trans }}</p>
+                            <p class="res-block__meta-val">{{ reservation.units|length }}</p>
                         </div>
                     </div>
-                    <a href="{{ path('app_customer_unit_detail', {'id': unit.id}) }}" class="btn btn-ghost btn-sm">Gérer</a>
+
+                    <div class="units-grid">
+                        {% for unit in reservation.units %}
+                            <div class="unit-row">
+                                <div class="unit-row__info">
+                                    <div class="unit-row__dot"></div>
+                                    <div>
+                                        <div class="unit-row__name">{{ unit.name }}</div>
+                                        <div class="unit-row__bay">{{ 'reservations.bay'|trans }} {{ unit.bay.name }}</div>
+                                    </div>
+                                </div>
+                                <a href="{{ path('app_customer_unit_detail', {'id': unit.id}) }}" class="btn btn-ghost btn-sm">{{ 'reservations.manage'|trans }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    <div style="margin-top:2rem;">
-        <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">← Accueil</a>
-    </div>
+        <div style="margin-top:2rem;">
+            <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">← {{ 'reservations.home'|trans }}</a>
+        </div>
     {% endif %}
 </div>
 {% endblock %}

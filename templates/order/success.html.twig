@@ -37,45 +37,45 @@
     }
 </style>
 
-<div class="success-wrap">
-    <div class="success-box">
-        <div class="success-icon">✓</div>
-        <h1 class="success-title grad-text">Commande confirmée !</h1>
-        <p class="success-sub">Votre réservation a bien été enregistrée. Voici le récapitulatif :</p>
+    <div class="success-wrap">
+        <div class="success-box">
+            <div class="success-icon">✓</div>
+            <h1 class="success-title grad-text">{{ 'success.title'|trans }}</h1>
+            <p class="success-sub">{{ 'success.sub'|trans }}</p>
 
-        <div class="summary">
-            <div class="summary-row">
-                <span class="summary-row__key">Offre</span>
-                <span class="summary-row__val">{{ reservation.offer.name }}</span>
+            <div class="summary">
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.offer'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.offer.name }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.price'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.offer.price }} €/mois</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.begin'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.beginDate|date('d/m/Y') }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.end'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.finishDate|date('d/m/Y') }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.status'|trans }}</span>
+                    <span class="summary-row__val" style="color:#fbbf24;">{{ reservation.status.value }}</span>
+                </div>
             </div>
-            <div class="summary-row">
-                <span class="summary-row__key">Tarif</span>
-                <span class="summary-row__val">{{ reservation.offer.price }} €/mois</span>
+
+            <p style="font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:.75rem;">{{ 'success.assignedUnits'|trans }}</p>
+            <div class="units-chips">
+                {% for unit in reservation.units %}
+                    <span class="unit-chip">{{ unit.bay.name }}-{{ unit.name }}</span>
+                {% endfor %}
             </div>
-            <div class="summary-row">
-                <span class="summary-row__key">Début</span>
-                <span class="summary-row__val">{{ reservation.beginDate|date('d/m/Y') }}</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-row__key">Fin</span>
-                <span class="summary-row__val">{{ reservation.finishDate|date('d/m/Y') }}</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-row__key">Statut</span>
-                <span class="summary-row__val" style="color:#fbbf24;">{{ reservation.status.value }}</span>
-            </div>
+
+            <a href="{{ path('app_customer_dashboard') }}" class="btn btn-primary btn-lg">
+                {{ 'success.goToDashboard'|trans }}
+            </a>
         </div>
-
-        <p style="font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:.75rem;">Unités assignées</p>
-        <div class="units-chips">
-            {% for unit in reservation.units %}
-                <span class="unit-chip">{{ unit.bay.name }}-{{ unit.name }}</span>
-            {% endfor %}
-        </div>
-
-        <a href="{{ path('app_customer_dashboard') }}" class="btn btn-primary btn-lg">
-            Aller à mon espace
-        </a>
     </div>
-</div>
 {% endblock %}

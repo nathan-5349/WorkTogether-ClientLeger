@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -140,6 +140,14 @@
             box-shadow: 0 0 18px rgba(139,92,246,.28);
         }
 
+        .wt-lang-btn img,
+        .wt-dropdown__item img {
+            width: 18px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 2px;
+        }
+
         /* ── Glass card ── */
         .glass {
             background: var(--glass);
@@ -264,6 +272,95 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: rgba(139,92,246,.4); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--violet); }
+
+        /* --- Navbar Layout --- */
+        .wt-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; position: sticky; top: 0; z-index: 1000;
+        }
+
+        .wt-nav__actions {
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .wt-dropdown { position: relative; }
+        .wt-dropdown__menu {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 15px);
+            min-width: 160px;
+            padding: 0.5rem;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            background: rgba(15, 12, 33, 0.85);
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .wt-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+        .wt-burger span {
+            width: 22px;
+            height: 2px;
+            background: var(--text);
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+        .wt-dropdown__menu.is-active {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .wt-dropdown__item {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: var(--mono);
+            border-radius: var(--r-sm);
+            transition: all 0.2s;
+        }
+        .wt-dropdown__item:hover {
+            background: var(--glass-b);
+            color: var(--cyan);
+            padding-left: 1.2rem; /* Petit effet de décalage au hover */
+        }
+        .wt-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .wt-burger.open span:nth-child(2) { opacity: 0; }
+        .wt-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        @media (max-width: 768px) {
+            .wt-burger { display: flex; }
+            .wt-nav__brand span { display: none; }
+            .wt-nav__links {
+                display: none;
+                position: fixed;
+                top: 68px; left: 0; right: 0; bottom: 0;
+                background: var(--bg);
+                flex-direction: column;
+                padding: 3rem 2rem;
+                gap: 1.5rem;
+                z-index: 1000;
+            }
+            .wt-nav__links.is-active {
+                display: flex;
+                animation: slideIn 0.3s ease forwards;
+            }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
     {% endblock %}
 </head>
@@ -279,21 +376,57 @@
     <nav class="wt-nav">
         <a class="wt-nav__brand" href="{{ path('app_home') }}">
             <div class="wt-nav__brand-icon">⬡</div>
-            WorkTogether
+            <span>WorkTogether</span>
         </a>
-        <div class="wt-nav__links">
-            <a class="wt-nav__link" href="{{ path('app_home') }}">Accueil</a>
-            <a class="wt-nav__link" href="{{ path('app_offers') }}">Offres</a>
+
+        {% set languages = {
+            'fr': {'label': 'FR', 'name': 'Français', 'flag': 'fr.svg'},
+            'en': {'label': 'EN', 'name': 'English',  'flag': 'gb.svg'},
+            'es': {'label': 'ES', 'name': 'Español', 'flag': 'es.svg'}
+        } %}
+
+        <div class="wt-nav__links" id="navLinks">
+            <a class="wt-nav__link" href="{{ path('app_home') }}">{{ 'header.home'|trans }}</a>
+            <a class="wt-nav__link" href="{{ path('app_offers') }}">{{ 'header.offers'|trans }}</a>
             {% if app.user %}
-                <a class="wt-nav__link" href="{{ path('app_dashboard') }}">Dashboard</a>
-                <a class="wt-nav__link wt-nav__link--pill" href="{{ path('app_logout') }}">Déconnexion</a>
+                <a class="wt-nav__link" href="{{ path('app_dashboard') }}">{{ 'header.dashboard'|trans }}</a>
+                <a class="wt-nav__link wt-nav__link--pill" href="{{ path('app_logout') }}">{{ 'header.logout'|trans }}</a>
             {% else %}
-                <a class="wt-nav__link" href="{{ path('app_login') }}">Connexion</a>
-                <a class="wt-nav__link wt-nav__link--pill" href="{{ path('app_registration') }}">S'inscrire</a>
+                <a class="wt-nav__link" href="{{ path('app_login') }}">{{ 'header.connection'|trans }}</a>
+                <a class="wt-nav__link wt-nav__link--pill" href="{{ path('app_registration') }}">{{ 'header.register'|trans }}</a>
             {% endif %}
         </div>
-    </nav>
 
+        <div class="wt-nav__actions">
+            <div class="wt-dropdown">
+
+                {% set current = languages[app.request.locale] %}
+
+                <button class="btn btn-ghost wt-lang-btn" id="langBtn">
+                    <img src="{{ asset('assets/flags/' ~ current.flag) }}" width="18">
+                    {{ current.label }}
+                    <span class="wt-chevron">▼</span>
+                </button>
+                <div class="wt-dropdown__menu glass" id="langMenu">
+                    {% set currentRoute = app.request.attributes.get('_route') %}
+                    {% set currentParams = app.request.attributes.get('_route_params')|default({}) %}
+
+                    {% for code, lang in languages %}
+                        <a class="wt-dropdown__item"
+                           href="{{ path(currentRoute, currentParams|merge({'_locale': code})) }}">
+
+                            <img src="{{ asset('assets/flags/' ~ lang.flag) }}" width="18">
+                            {{ lang.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button class="wt-burger" id="burgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
     {% for label, flashes in app.flashes %}
         {% for msg in flashes %}
             <div class="wt-container" style="padding-top:1rem; position:relative; z-index:2;">
@@ -303,6 +436,6 @@
     {% endfor %}
 
     {% block body %}{% endblock %}
-
+    <script src="{{ asset('assets/js/script.js') }}"></script>
 </body>
 </html>

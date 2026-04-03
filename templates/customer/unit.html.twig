@@ -62,83 +62,84 @@
     }
 </style>
 
-<div class="wt-container wt-page">
-    <div class="unit-breadcrumb">
-        <a href="{{ path('app_customer_dashboard') }}">Accueil</a>
-        <span>/</span>
-        <a href="{{ path('app_order_reservations') }}">Réservations</a>
-        <span>/</span>
-        {{ unit.bay.name }}-{{ unit.name }}
-    </div>
-
-    <div class="unit-header">
-        <h1 class="wt-h1" style="font-size:1.8rem;">{{ unit.bay.name }}-{{ unit.name }}</h1>
-        {% set s = unit.status.value %}
-        {% if s == 'Libre' %}
-            <span class="wt-badge wt-badge--ok">{{ s }}</span>
-        {% elseif s == 'Maintenance' %}
-            <span class="wt-badge wt-badge--warn">{{ s }}</span>
-        {% else %}
-            <span class="wt-badge wt-badge--off">{{ s }}</span>
-        {% endif %}
-    </div>
-
-    <div class="unit-main">
-        <div>
-            <div class="metrics-grid">
-                <div class="metric">
-                    <div class="metric__val">{{ unit.powerConsumption ?? '—' }}<span class="metric__unit"> W</span></div>
-                    <div class="metric__label">Consommation</div>
-                </div>
-                <div class="metric">
-                    <div class="metric__val">{{ unit.temperature is not null ? unit.temperature|number_format(1) : '—' }}<span class="metric__unit"> °C</span></div>
-                    <div class="metric__label">Température</div>
-                </div>
-                <div class="metric">
-                    <div class="metric__val">{{ unit.networkThroughput is not null ? unit.networkThroughput|number_format(1) : '—' }}<span class="metric__unit"> Gbps</span></div>
-                    <div class="metric__label">Débit réseau</div>
-                </div>
-            </div>
-
-            <div class="info-list">
-                <div class="info-row">
-                    <span class="info-row__key">Nom</span>
-                    <span class="info-row__val">{{ unit.name }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-row__key">Baie</span>
-                    <span class="info-row__val">{{ unit.bay.name }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-row__key">Position</span>
-                    <span class="info-row__val">U{{ unit.position }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-row__key">Type</span>
-                    <span class="info-row__val">{{ unit.type ?? 'Non défini' }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-row__key">Emplacement</span>
-                    <span class="info-row__val">{{ unit.fullLocation }}</span>
-                </div>
-            </div>
+    {# unit #}
+    <div class="wt-container wt-page">
+        <div class="unit-breadcrumb">
+            <a href="{{ path('app_customer_dashboard') }}">{{ 'common.home'|trans }}</a>
+            <span>/</span>
+            <a href="{{ path('app_order_reservations') }}">{{ 'reservations.pageTitle'|trans }}</a>
+            <span>/</span>
+            {{ unit.bay.name }}-{{ unit.name }}
         </div>
 
-        <div class="edit-panel">
-            <p class="edit-panel__title">Configurer l'unité</p>
-            {{ form_start(form) }}
+        <div class="unit-header">
+            <h1 class="wt-h1" style="font-size:1.8rem;">{{ unit.bay.name }}-{{ unit.name }}</h1>
+            {% set s = unit.status.value %}
+            {% if s == 'Libre' %}
+                <span class="wt-badge wt-badge--ok">{{ s }}</span>
+            {% elseif s == 'Maintenance' %}
+                <span class="wt-badge wt-badge--warn">{{ s }}</span>
+            {% else %}
+                <span class="wt-badge wt-badge--off">{{ s }}</span>
+            {% endif %}
+        </div>
+
+        <div class="unit-main">
+            <div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric__val">{{ unit.powerConsumption ?? '—' }}<span class="metric__unit"> W</span></div>
+                        <div class="metric__label">{{ 'unit.power'|trans }}</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric__val">{{ unit.temperature is not null ? unit.temperature|number_format(1) : '—' }}<span class="metric__unit"> °C</span></div>
+                        <div class="metric__label">{{ 'unit.temperature'|trans }}</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric__val">{{ unit.networkThroughput is not null ? unit.networkThroughput|number_format(1) : '—' }}<span class="metric__unit"> Gbps</span></div>
+                        <div class="metric__label">{{ 'unit.network'|trans }}</div>
+                    </div>
+                </div>
+
+                <div class="info-list">
+                    <div class="info-row">
+                        <span class="info-row__key">{{ 'unit.name'|trans }}</span>
+                        <span class="info-row__val">{{ unit.name }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row__key">{{ 'unit.bay'|trans }}</span>
+                        <span class="info-row__val">{{ unit.bay.name }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row__key">{{ 'unit.position'|trans }}</span>
+                        <span class="info-row__val">U{{ unit.position }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row__key">{{ 'unit.type'|trans }}</span>
+                        <span class="info-row__val">{{ unit.type ?? 'unit.typeUndefined'|trans }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row__key">{{ 'unit.location'|trans }}</span>
+                        <span class="info-row__val">{{ unit.fullLocation }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-panel">
+                <p class="edit-panel__title">{{ 'unit.configure'|trans }}</p>
+                {{ form_start(form) }}
                 {{ form_row(form.name) }}
                 {{ form_row(form.type) }}
                 <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:.75rem;">
-                    Sauvegarder
+                    {{ 'common.save'|trans }}
                 </button>
-            {{ form_end(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <div style="margin-top:2rem; display:flex; gap:.75rem;">
+            <a href="{{ path('app_order_reservations') }}" class="btn btn-ghost">{{ 'common.back'|trans }}</a>
+            <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">{{ 'common.home'|trans }}</a>
         </div>
     </div>
-
-    <div style="margin-top:2rem; display:flex; gap:.75rem;">
-        <a href="{{ path('app_order_reservations') }}" class="btn btn-ghost">Retour</a>
-        <a href="{{ path('app_customer_dashboard') }}" class="btn btn-ghost">Accueil</a>
-    </div>
-</div>
 {% endblock %}

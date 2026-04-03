@@ -33,27 +33,26 @@
     }
     .reg-footer a { color: var(--cyan); text-decoration: none; }
 </style>
-
-<div class="reg-wrap">
-    <div class="reg-choice">
-        <span class="wt-label" style="justify-content:center; display:flex;">Inscription</span>
-        <h1 class="reg-choice__title">Quel type de compte ?</h1>
-        <p class="reg-choice__sub">Choisissez le profil correspondant à votre situation.</p>
-        <div class="reg-cards">
-            <a href="{{ path('app_particular_registration') }}" class="reg-card">
-                <div class="reg-card__icon">👤</div>
-                <div class="reg-card__label">Particulier</div>
-                <p class="reg-card__desc">Vous souhaitez héberger vos équipements personnels.</p>
-            </a>
-            <a href="{{ path('app_company_registration') }}" class="reg-card">
-                <div class="reg-card__icon">🏢</div>
-                <div class="reg-card__label">Entreprise</div>
-                <p class="reg-card__desc">Vous représentez une société ou une organisation.</p>
-            </a>
-        </div>
-        <div class="reg-footer">
-            Déjà un compte ? <a href="{{ path('app_login') }}">Se connecter</a>
+    <div class="reg-wrap">
+        <div class="reg-choice">
+            <span class="wt-label" style="justify-content:center; display:flex;">{{ 'registration.label'|trans }}</span>
+            <h1 class="reg-choice__title">{{ 'registration.title'|trans }}</h1>
+            <p class="reg-choice__sub">{{ 'registration.sub'|trans }}</p>
+            <div class="reg-cards">
+                <a href="{{ path('app_particular_registration') }}" class="reg-card">
+                    <div class="reg-card__icon">👤</div>
+                    <div class="reg-card__label">{{ 'registration.particular'|trans }}</div>
+                    <p class="reg-card__desc">{{ 'registration.particularDesc'|trans }}</p>
+                </a>
+                <a href="{{ path('app_company_registration') }}" class="reg-card">
+                    <div class="reg-card__icon">🏢</div>
+                    <div class="reg-card__label">{{ 'registration.company'|trans }}</div>
+                    <p class="reg-card__desc">{{ 'registration.companyDesc'|trans }}</p>
+                </a>
+            </div>
+            <div class="reg-footer">
+                {{ 'registration.alreadyAccount'|trans }} <a href="{{ path('app_login') }}">{{ 'registration.loginLink'|trans }}</a>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

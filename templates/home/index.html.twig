@@ -223,33 +223,33 @@
     <div class="wt-container" style="position:relative;">
         <div class="hero__badge">
             <span class="hero__badge-dot"></span>
-            Infrastructure · Datacenter · Colocation
+            {{ 'home.littleTitle'|trans }}
         </div>
 
         <h1 class="hero__title">
-            <span class="grad-text">Votre infrastructure,</span>
-            <span class="line-2">sans compromis.</span>
+            <span class="grad-text">{{ 'home.highTitle'|trans }}</span>
+            <span class="line-2">{{ 'home.downTitle'|trans }}</span>
         </h1>
 
         <p class="hero__sub">
-            Hébergez vos équipements dans nos baies haute densité — connectivité ultrarapide, redondance totale, sécurité physique de niveau enterprise.
+            {{ 'home.describe'|trans }}
         </p>
 
         <div class="hero__actions">
             <a href="{{ path('app_offers') }}" class="btn btn-primary btn-lg">
-                Voir les offres
+                {{ 'home.checkOffers'|trans }}
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             {% if not app.user %}
-            <a href="{{ path('app_registration') }}" class="btn btn-glow btn-lg">Créer un compte</a>
+            <a href="{{ path('app_registration') }}" class="btn btn-glow btn-lg">{{ 'home.createAccount'|trans }}</a>
             {% else %}
-            <a href="{{ path('app_dashboard') }}" class="btn btn-ghost btn-lg">Mon espace</a>
+            <a href="{{ path('app_dashboard') }}" class="btn btn-ghost btn-lg">{{ 'home.mySpace'|trans }}</a>
             {% endif %}
         </div>
 
         <div class="hero__scroll">
             <div class="hero__scroll-line"></div>
-            <span>Découvrir</span>
+            <span>{{ 'home.find'|trans }}</span>
         </div>
     </div>
 </section>
@@ -260,66 +260,66 @@
     <div class="stats">
         <div class="stat">
             <div class="stat__num">30</div>
-            <div class="stat__label">Baies actives</div>
+            <div class="stat__label">{{ 'home.bays'|trans }}</div>
         </div>
         <div class="stat">
             <div class="stat__num">1&thinsp;260</div>
-            <div class="stat__label">Unités disponibles</div>
+            <div class="stat__label">{{ 'home.units'|trans }}</div>
         </div>
         <div class="stat">
             <div class="stat__num">99,9%</div>
-            <div class="stat__label">Uptime garanti</div>
+            <div class="stat__label">{{ 'home.garanti'|trans }}</div>
         </div>
     </div>
 
     <!-- FEATURES -->
     <div class="section-head">
-        <span class="wt-label">Pourquoi WorkTogether</span>
-        <h2 class="section-head__title grad-text">Une plateforme pensée<br>pour les pros</h2>
-        <p class="section-head__sub">De la connectivité à la sécurité, chaque détail est maîtrisé.</p>
+        <span class="wt-label">{{ 'home.whyTitle'|trans }}</span>
+        <h2 class="section-head__title grad-text">{{ 'home.whySubtitle'|trans }}</h2>
+        <p class="section-head__sub">{{ 'home.whyDesc'|trans }}</p>
     </div>
 
     <div class="features">
         <div class="feature">
             <div class="feature__icon">⚡</div>
-            <div class="feature__title">Connectivité ultrarapide</div>
-            <p class="feature__desc">Accès réseau multi-opérateurs redondant avec des débits jusqu'à 100 Gbps pour vos applications critiques.</p>
+            <div class="feature__title">{{ 'home.feature1Title'|trans }}</div>
+            <p class="feature__desc">{{ 'home.feature1Desc'|trans }}</p>
         </div>
         <div class="feature">
             <div class="feature__icon">🔒</div>
-            <div class="feature__title">Sécurité physique</div>
-            <p class="feature__desc">Contrôle d'accès biométrique, vidéosurveillance 24/7 et agents de sécurité dédiés pour protéger vos actifs.</p>
+            <div class="feature__title">{{ 'home.feature2Title'|trans }}</div>
+            <p class="feature__desc">{{ 'home.feature2Desc'|trans }}</p>
         </div>
         <div class="feature">
             <div class="feature__icon">🔋</div>
-            <div class="feature__title">Redondance électrique</div>
-            <p class="feature__desc">Alimentation N+1 avec onduleurs et groupes électrogènes assurant 100% de continuité opérationnelle.</p>
+            <div class="feature__title">{{ 'home.feature3Title'|trans }}</div>
+            <p class="feature__desc">{{ 'home.feature3Desc'|trans }}</p>
         </div>
         <div class="feature">
             <div class="feature__icon">🌡</div>
-            <div class="feature__title">Refroidissement précis</div>
-            <p class="feature__desc">Climatisation de précision maintenant une température entre 18 et 27°C dans toutes les allées de baies.</p>
+            <div class="feature__title">{{ 'home.feature4Title'|trans }}</div>
+            <p class="feature__desc">{{ 'home.feature4Desc'|trans }}</p>
         </div>
         <div class="feature">
             <div class="feature__icon">📊</div>
-            <div class="feature__title">Monitoring temps réel</div>
-            <p class="feature__desc">Tableau de bord dédié : consommation, température, débit réseau — tout visible depuis votre espace client.</p>
+            <div class="feature__title">{{ 'home.feature5Title'|trans }}</div>
+            <p class="feature__desc">{{ 'home.feature5Desc'|trans }}</p>
         </div>
         <div class="feature">
             <div class="feature__icon">🛠</div>
-            <div class="feature__title">Support expert</div>
-            <p class="feature__desc">Équipe technique disponible pour toute intervention avec des SLA définis contractuellement et respectés.</p>
+            <div class="feature__title">{{ 'home.feature6Title'|trans }}</div>
+            <p class="feature__desc">{{ 'home.feature6Desc'|trans }}</p>
         </div>
     </div>
 
     <!-- CTA BANNER -->
     <div class="cta-banner">
-        <h2 class="cta-banner__title">Prêt à démarrer ?</h2>
-        <p class="cta-banner__sub">Rejoignez les entreprises qui nous font confiance pour leur infrastructure critique.</p>
+        <h2 class="cta-banner__title">{{ 'home.ctaTitle'|trans }}</h2>
+        <p class="cta-banner__sub">{{ 'home.ctaDesc'|trans }}</p>
         <div class="cta-banner__actions">
-            <a href="{{ path('app_offers') }}" class="btn btn-primary btn-lg">Voir les offres</a>
+            <a href="{{ path('app_offers') }}" class="btn btn-primary btn-lg">{{ 'home.checkOffers'|trans }}</a>
             {% if not app.user %}
-            <a href="{{ path('app_registration') }}" class="btn btn-ghost btn-lg">S'inscrire gratuitement</a>
+                <a href="{{ path('app_registration') }}" class="btn btn-ghost btn-lg">{{ 'home.createAccount'|trans }}</a>
             {% endif %}
         </div>
     </div>

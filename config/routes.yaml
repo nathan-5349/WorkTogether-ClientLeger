@@ -6,9 +6,21 @@
 
 # To list all registered routes, run the following command:
 #   bin/console debug:router
+app:
+    resource: ../src/Controller/
+    type : attribute
+    prefix: /{_locale}
+    requirements:
+        _locale: fr|en|es
+    defaults:
+        _locale: fr
+    exclude:
+        - ../src/Controller/HomeController.php
 
-controllers:
-    resource: routing.controllers
+home:
+    resource: ../src/Controller/HomeController.php
+    type: attribute
+
 api_login:
     path: /api/login
     methods: [POST]
