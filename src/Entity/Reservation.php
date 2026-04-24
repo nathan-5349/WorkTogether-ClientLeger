@@ -1,15 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use App\Enum\ReservationStatus;
 use App\Repository\ReservationRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\Offer;
-use App\Entity\Customer;
-use App\Entity\Unit;
-use App\Enum\ReservationStatus;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -82,6 +81,7 @@ class Reservation
     public function setOffer(?Offer $offer): static
     {
         $this->offer = $offer;
+
         return $this;
     }
 
@@ -93,21 +93,24 @@ class Reservation
     public function setCustomer(?Customer $customer): static
     {
         $this->customer = $customer;
+
         return $this;
     }
 
-    public function getUnits (): Collection
+    public function getUnits(): Collection
     {
         return $this->units;
     }
+
     public function addUnit(Unit $unit): static
     {
         if (!$this->units->contains($unit)) {
             $this->units->add($unit);
         }
-        
+
         return $this;
     }
+
     public function removeUnit(Unit $unit): static
     {
         $this->units->removeElement($unit);

@@ -1,20 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use App\Form\ParticularRegistrationType;
-use App\Form\CompanyRegistrationType;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Form\ChangePasswordType;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Repository\ReservationRepository;
 use App\Entity\Customer;
-use App\Repository\UnitRepository;
+use App\Form\ChangePasswordType;
+use App\Form\CompanyRegistrationType;
+use App\Form\ParticularRegistrationType;
 use App\Form\UnitType;
+use App\Repository\ReservationRepository;
+use App\Repository\UnitRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class CustomerController extends AbstractController
 {
@@ -25,7 +27,7 @@ final class CustomerController extends AbstractController
             'controller_name' => 'CustomerController',
         ]);
     }
-    
+
     #[Route('/customer/profile', name: 'app_customer_profile')]
     public function profile(): Response
     {
@@ -65,7 +67,7 @@ final class CustomerController extends AbstractController
     public function changePassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
-        
+
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
@@ -78,6 +80,7 @@ final class CustomerController extends AbstractController
 
             if (!$passwordHasher->isPasswordValid($user, $currentPassword)) {
                 $this->addFlash('error', 'Mot de passe actuel incorrect.');
+
                 return $this->redirectToRoute('app_customer_change_password');
             }
 
@@ -87,7 +90,7 @@ final class CustomerController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
-            
+
             $em->flush();
 
             return $this->redirectToRoute('app_customer_profile');
@@ -98,7 +101,6 @@ final class CustomerController extends AbstractController
         ]);
     }
 
-    
     #[Route('/order/reservations', name: 'app_order_reservations')]
     public function reservations(ReservationRepository $reservationRepository): Response
     {
@@ -108,32 +110,33 @@ final class CustomerController extends AbstractController
         }
 
         $reservations = $reservationRepository->findBy(['customer' => $customer]);
-        
+
         return $this->render('order/reservations.html.twig', [
             'reservations' => $reservations,
         ]);
     }
 
     #[Route('/customer/unit/{id}', name: 'app_customer_unit_detail')]
-    public function unitDetail(int $id, Request $request,EntityManagerInterface $em, UnitRepository $unitRepository): Response
+    public function unitDetail(int $id, Request $request, EntityManagerInterface $em, UnitRepository $unitRepository): Response
     {
         $unit = $unitRepository->find($id);
 
         if (!$unit) {
             throw $this->createNotFoundException('Unité introuvable.');
         }
-        
+
         $form = $this->createForm(UnitType::class, $unit);
         $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $em->flush();
-        return $this->redirectToRoute('app_customer_unit_detail', ['id' => $unit->getId()]);
-    }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
 
-    return $this->render('customer/unit.html.twig', [
-        'unit' => $unit,
-        'form' => $form->createView(),
-    ]);
+            return $this->redirectToRoute('app_customer_unit_detail', ['id' => $unit->getId()]);
+        }
+
+        return $this->render('customer/unit.html.twig', [
+            'unit' => $unit,
+            'form' => $form->createView(),
+        ]);
     }
 }

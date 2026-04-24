@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\OfferRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\Reservation;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 class Offer
@@ -24,7 +25,7 @@ class Offer
 
     #[ORM\Column]
     private ?int $price = null;
-    
+
     #[ORM\Column]
     private int $version = 1;
 
@@ -118,5 +119,4 @@ class Offer
     {
         return $this->reservations;
     }
-    
 }

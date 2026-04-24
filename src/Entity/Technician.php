@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\TechnicianRepository;
@@ -35,6 +37,7 @@ class Technician extends User
     public function setPhone(string $phone): static
     {
         $this->phone = $phone;
+
         return $this;
     }
 }

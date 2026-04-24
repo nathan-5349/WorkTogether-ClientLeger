@@ -1,25 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
+use App\Entity\Customer;
+use App\Entity\Reservation;
+use App\Enum\UnitStatus;
+use App\Form\OrderType;
+use App\Repository\OfferRepository;
+use App\Repository\ReservationRepository;
+use App\Repository\UnitRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Repository\OfferRepository;
-use App\Repository\UnitRepository;
-use App\Entity\Reservation;
-use App\Form\OrderType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Customer;
-use App\Repository\ReservationRepository;
-use App\Enum\UnitStatus;
 
 final class OrderController extends AbstractController
 {
     #[Route('/order/{id}', name: 'app_order')]
-    public function index(int $id,Request $request, EntityManagerInterface $em, OfferRepository $offerRepo,
-    UnitRepository $unitRepository): Response
+    public function index(int $id, Request $request, EntityManagerInterface $em, OfferRepository $offerRepo,
+        UnitRepository $unitRepository): Response
     {
         $offer = $offerRepo->find($id);
 
@@ -36,13 +38,14 @@ final class OrderController extends AbstractController
 
             if ($beginDate < new \DateTimeImmutable()) {
                 $this->addFlash('error', 'La date de début ne peut pas être dans le passé.');
+
                 return $this->redirectToRoute('app_order', ['id' => $id]);
             }
 
             $duration = $form->get('duration')->getData();
-            if ($duration === 'monthly') {
+            if ('monthly' === $duration) {
                 $reservation->setFinishDate((clone $beginDate)->modify('+1 month'));
-            } elseif ($duration === 'annual') {
+            } elseif ('annual' === $duration) {
                 $reservation->setFinishDate((clone $beginDate)->modify('+1 year'));
             }
 
@@ -63,7 +66,7 @@ final class OrderController extends AbstractController
             $em->persist($reservation);
             $em->flush();
 
-            return $this->redirectToRoute('app_order_success', ['id' => $reservation->getId()]);        
+            return $this->redirectToRoute('app_order_success', ['id' => $reservation->getId()]);
         }
 
         return $this->render('order/index.html.twig', [

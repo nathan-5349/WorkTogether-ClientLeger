@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\BayRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\Unit;
-use ApiPlatform\Metadata\ApiResource;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BayRepository::class)]
@@ -19,7 +19,7 @@ class Bay
     private ?int $id = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['unit:read','intervention:read'])]
+    #[Groups(['unit:read', 'intervention:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
@@ -32,7 +32,7 @@ class Bay
     {
         $this->units = new ArrayCollection();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -42,6 +42,7 @@ class Bay
     {
         return $this->capacityUnit;
     }
+
     public function setCapacityUnit(int $capacityUnit): static
     {
         $this->capacityUnit = $capacityUnit;
@@ -53,6 +54,7 @@ class Bay
     {
         return $this->units;
     }
+
     public function addUnit(Unit $unit): static
     {
         if (!$this->units->contains($unit)) {
@@ -62,6 +64,7 @@ class Bay
 
         return $this;
     }
+
     public function removeUnit(Unit $unit): static
     {
         if ($this->units->removeElement($unit)) {
