@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\NoticeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Customer;
 
 #[ORM\Entity(repositoryClass: NoticeRepository::class)]
 class Notice
@@ -50,8 +51,9 @@ class Notice
     public function setNote(int $note): static
     {
         $this->note = $note;
+
         return $this;
-    }   
+    }
 
     public function getCustomer(): ?Customer
     {
@@ -61,6 +63,7 @@ class Notice
     public function setCustomer(?Customer $customer): static
     {
         $this->customer = $customer;
+
         return $this;
     }
 }

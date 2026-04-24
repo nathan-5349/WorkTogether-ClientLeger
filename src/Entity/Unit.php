@@ -1,18 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use App\Repository\UnitRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use App\Entity\Bay;
-use App\Enum\UnitStatus;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
+use App\Enum\UnitStatus;
+use App\Repository\UnitRepository;
 use App\State\UnitProvider;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['unit:read']],
@@ -21,7 +22,6 @@ use App\State\UnitProvider;
         new Get(provider: UnitProvider::class),
     ]
 )]
-
 #[ORM\Entity(repositoryClass: UnitRepository::class)]
 class Unit
 {
@@ -35,12 +35,12 @@ class Unit
     private ?int $position = null;
 
     #[ORM\Column(length: 30)]
-    #[Groups(['unit:read','intervention:read'])]
+    #[Groups(['unit:read', 'intervention:read'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'units')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['unit:read','intervention:read'])]
+    #[Groups(['unit:read', 'intervention:read'])]
     private ?Bay $bay = null;
 
     #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'units')]
@@ -79,11 +79,12 @@ class Unit
     {
         return $this->id;
     }
-    
+
     public function getPosition(): ?int
     {
         return $this->position;
-        }
+    }
+
     public function setPosition(int $position): static
     {
         $this->position = $position;
@@ -94,7 +95,8 @@ class Unit
     public function getName(): ?string
     {
         return $this->name;
-        }
+    }
+
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -106,6 +108,7 @@ class Unit
     {
         return $this->bay;
     }
+
     public function setBay(?Bay $bay): static
     {
         $this->bay = $bay;
@@ -117,6 +120,7 @@ class Unit
     {
         return $this->reservations;
     }
+
     public function addReservation(Reservation $reservation): static
     {
         if (!$this->reservations->contains($reservation)) {
@@ -126,6 +130,7 @@ class Unit
 
         return $this;
     }
+
     public function removeReservation(Reservation $reservation): static
     {
         if ($this->reservations->removeElement($reservation)) {
@@ -133,7 +138,8 @@ class Unit
             if ($reservation->getUnit() === $this) {
                 $reservation->setUnit(null);
             }
-        return $this;
+
+            return $this;
         }
     }
 
@@ -141,9 +147,11 @@ class Unit
     {
         return $this->status;
     }
+
     public function setStatus(UnitStatus $status): static
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -155,6 +163,7 @@ class Unit
     public function setType(?string $type): static
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -190,6 +199,7 @@ class Unit
     public function setPowerConsumption(?int $powerConsumption): static
     {
         $this->powerConsumption = $powerConsumption;
+
         return $this;
     }
 
@@ -201,6 +211,7 @@ class Unit
     public function setTemperature(?float $temperature): static
     {
         $this->temperature = $temperature;
+
         return $this;
     }
 
@@ -212,12 +223,13 @@ class Unit
     public function setNetworkThroughput(?float $networkThroughput): static
     {
         $this->networkThroughput = $networkThroughput;
+
         return $this;
     }
 
-    #[Groups(['unit:read','intervention:read'])]
-    public function getFullLocation(): string 
+    #[Groups(['unit:read', 'intervention:read'])]
+    public function getFullLocation(): string
     {
-        return ($this->bay ? $this->bay->getName() : 'N/A') . '-' . $this->name;
+        return ($this->bay ? $this->bay->getName() : 'N/A').'-'.$this->name;
     }
 }

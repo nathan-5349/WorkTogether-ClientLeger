@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use App\Entity\Particular;
 use App\Entity\Company;
-use App\Form\ParticularRegistrationType;
+use App\Entity\Particular;
 use App\Form\CompanyRegistrationType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Form\ParticularRegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class RegistrationController extends AbstractController
 {
@@ -26,12 +28,12 @@ final class RegistrationController extends AbstractController
     #[Route('/registration/particular', name: 'app_particular_registration')]
     public function particularRegistration(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        $particular = new Particular;
+        $particular = new Particular();
         $form = $this->createForm(ParticularRegistrationType::class, $particular);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $particular ->setRoles(['ROLE_CUSTOMER']);
+            $particular->setRoles(['ROLE_CUSTOMER']);
             $particular->setPassword(
                 $passwordHasher->hashPassword(
                     $particular,
@@ -52,12 +54,12 @@ final class RegistrationController extends AbstractController
     #[Route('/registration/company', name: 'app_company_registration')]
     public function companyRegistration(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        $company = new Company;
+        $company = new Company();
         $form = $this->createForm(CompanyRegistrationType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $company ->setRoles(['ROLE_CUSTOMER']);
+            $company->setRoles(['ROLE_CUSTOMER']);
             $company->setPassword(
                 $passwordHasher->hashPassword(
                     $company,

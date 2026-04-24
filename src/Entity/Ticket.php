@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use App\Enum\TicketStatus;
 use App\Repository\TicketRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Enum\TicketStatus;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket
@@ -46,7 +48,6 @@ class Ticket
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $assignedBy = null;
-
 
     public function __construct()
     {
@@ -111,10 +112,11 @@ class Ticket
     {
         return $this->status;
     }
-    
+
     public function setStatus(TicketStatus $status): static
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -122,10 +124,11 @@ class Ticket
     {
         return $this->customer;
     }
-    
+
     public function setCustomer(?Customer $customer): static
     {
         $this->customer = $customer;
+
         return $this;
     }
 
@@ -137,12 +140,14 @@ class Ticket
     public function addTechnician(Technician $technician): static
     {
         $this->technicians->add($technician);
+
         return $this;
     }
 
     public function removeTechnician(Technician $technician): static
     {
         $this->technicians->removeElement($technician);
+
         return $this;
     }
 
@@ -150,9 +155,11 @@ class Ticket
     {
         return $this->assignedBy;
     }
+
     public function setAssignedBy(?User $assignedBy): static
     {
         $this->assignedBy = $assignedBy;
+
         return $this;
     }
 }

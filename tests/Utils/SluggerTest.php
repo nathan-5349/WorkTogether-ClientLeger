@@ -11,7 +11,7 @@ final class SluggerTest extends TestCase
 {
     public function testSlugify(): void
     {
-        //on va faire un test de PR pour tester le workflow de CI/CD
+        // on va faire un test de PR pour tester le workflow de CI/CD
         $slugger = new Slugger();
 
         self::assertSame('bonjour-le-monde', $slugger->slugify('Bonjour le monde'));

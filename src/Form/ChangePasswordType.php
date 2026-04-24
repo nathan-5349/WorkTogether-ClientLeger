@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangePasswordType extends AbstractType
 {
@@ -23,7 +25,7 @@ class ChangePasswordType extends AbstractType
                 'mapped' => false,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'required' => true,
-                'first_options'  => ['label' => 'Nouveau mot de passe'],
+                'first_options' => ['label' => 'Nouveau mot de passe'],
                 'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
             ]);
     }
