@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nos offres{% endblock %}
+
+{% block body %}
+<style>
+    .offers-hero { padding: 3.5rem 0 2.5rem; text-align: center; }
+    .offers-hero__title { font-size: clamp(1.8rem,4vw,3rem); font-weight: 900; letter-spacing: -.04em; margin-bottom: .6rem; }
+    .offers-hero__sub { color: var(--muted); font-size: .95rem; font-weight: 300; }
+
+    .offers-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 1.25rem; margin-top: 2.5rem;
+    }
+
+    .offer-card {
+        background: var(--glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--border); border-radius: var(--r-lg);
+        padding: 2rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;
+        position: relative; transition: border-color .25s, transform .25s, box-shadow .25s;
+    }
+    .offer-card:hover {
+        border-color: var(--border-h); transform: translateY(-5px);
+        box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+    .offer-card--featured {
+        border-color: rgba(139,92,246,.4);
+        background: linear-gradient(160deg, rgba(139,92,246,.1) 0%, var(--glass) 100%);
+    }
+    .offer-card__badge {
+        position: absolute; top: -1px; right: 1.5rem;
+        background: linear-gradient(135deg, var(--violet), var(--cyan));
+        color: #fff; font-family: var(--mono); font-size: .62rem;
+        letter-spacing: .1em; text-transform: uppercase; font-weight: 500;
+        padding: .25rem .7rem; border-radius: 0 0 6px 6px;
+    }
+    .offer-card__name { font-weight: 700; font-size: 1rem; letter-spacing: -.02em; }
+    .offer-card__price {
+        font-family: var(--mono); font-size: 2.2rem; font-weight: 700;
+        letter-spacing: -.04em; line-height: 1;
+        background: linear-gradient(135deg, #c4b5fd, var(--cyan));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .offer-card__price span { font-size: .78rem; color: var(--muted); -webkit-text-fill-color: var(--muted); font-weight: 400; }
+    .offer-card__units { font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+    .offer-card__units strong { color: var(--text); }
+    .offer-card__features { list-style: none; flex: 1; display: flex; flex-direction: column; gap: .45rem; }
+    .offer-card__features li {
+        font-size: .84rem; color: var(--muted); display: flex; align-items: center; gap: .5rem; font-weight: 300;
+    }
+    .offer-card__features li::before { content: '✓'; color: var(--cyan); font-weight: 700; font-size: .72rem; }
+    .offer-card .btn { width: 100%; justify-content: center; margin-top: auto; }
+</style>
+    <div class="wt-container wt-page">
+        <div class="offers-hero">
+            <span class="wt-label" style="justify-content:center; display:flex;">{{ 'offers.label'|trans }}</span>
+            <h1 class="offers-hero__title grad-text">{{ 'offers.title'|trans }}</h1>
+            <p class="offers-hero__sub">{{ 'offers.sub'|trans }}</p>
+        </div>
+
+        <div class="offers-grid">
+            {% for offer in offers %}
+                <div class="offer-card {% if loop.index == 2 %}offer-card--featured{% endif %}">
+                    {% if loop.index == 2 %}<div class="offer-card__badge">{{ 'offers.popular'|trans }}</div>{% endif %}
+                    <div class="offer-card__name">{{ offer.name }}</div>
+                    <div class="offer-card__price">{{ offer.price }}<span> {{ 'offers.perMonth'|trans }}</span></div>
+                    <div class="offer-card__units"><strong>{{ offer.nbUnit }}</strong> {{ 'offers.unit'|trans }}{{ offer.nbUnit > 1 ? 's' : '' }}</div>
+                    <ul class="offer-card__features">
+                        <li>{{ 'offers.feature1'|trans }}</li>
+                        <li>{{ 'offers.feature2'|trans }}</li>
+                        <li>{{ 'offers.feature3'|trans }}</li>
+                        <li>{{ 'offers.feature4'|trans }}</li>
+                    </ul>
+                    <a href="{{ path('app_order', {'id': offer.id}) }}" class="btn btn-primary">{{ 'offers.order'|trans }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

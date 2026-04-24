@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../vendor/symfony/routing/Loader/schema/routing.schema.json
+
+# This file is the entry point to configure the routes of your app.
+# Methods with the #[Route] attribute are automatically imported.
+# See also https://symfony.com/doc/current/routing.html
+
+# To list all registered routes, run the following command:
+#   bin/console debug:router
+app:
+    resource: ../src/Controller/
+    type : attribute
+    prefix: /{_locale}
+    requirements:
+        _locale: fr|en|es
+    defaults:
+        _locale: fr
+    exclude:
+        - ../src/Controller/HomeController.php
+
+home:
+    resource: ../src/Controller/HomeController.php
+    type: attribute
+
+api_login:
+    path: /api/login
+    methods: [POST]

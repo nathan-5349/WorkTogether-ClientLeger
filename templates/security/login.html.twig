@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<style>
+    .login-wrap {
+        min-height: calc(100vh - 68px);
+        display: flex; align-items: center; justify-content: center; padding: 2rem;
+    }
+    .login-box { width: 100%; max-width: 400px; }
+    .login-brand {
+        text-align: center; margin-bottom: 2.5rem;
+    }
+    .login-brand__icon {
+        width: 48px; height: 48px; border-radius: var(--r-md); margin: 0 auto 1rem;
+        background: linear-gradient(135deg, var(--violet), var(--cyan));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem; box-shadow: 0 0 24px rgba(139,92,246,.4);
+    }
+    .login-brand__title { font-size: 1.5rem; font-weight: 900; letter-spacing: -.04em; }
+    .login-brand__sub   { color: var(--muted); font-size: .88rem; margin-top: .35rem; font-weight: 300; }
+
+    .login-card {
+        background: var(--glass);
+        backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--border); border-radius: var(--r-lg); padding: 2.25rem;
+    }
+    .login-footer {
+        text-align: center; margin-top: 1.25rem;
+        font-family: var(--mono); font-size: .72rem; color: var(--muted);
+    }
+    .login-footer a { color: var(--cyan); text-decoration: none; }
+    .login-footer a:hover { text-decoration: underline; }
+
+    .login-field { margin-bottom: 1.2rem; }
+    .login-field label {
+        display: block; font-family: var(--mono); font-size: .68rem;
+        letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem;
+    }
+    .login-field input {
+        width: 100%; background: rgba(255,255,255,.05); border: 1px solid var(--border);
+        border-radius: var(--r-sm); color: var(--text); padding: .75rem 1rem;
+        font-family: var(--mono); font-size: .84rem; outline: none;
+        transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .login-field input:focus {
+        border-color: var(--violet); background: rgba(139,92,246,.07);
+        box-shadow: 0 0 0 3px rgba(139,92,246,.18);
+    }
+</style>
+
+    <div class="login-wrap">
+        <div class="login-box">
+            <div class="login-brand">
+                <div class="login-brand__icon">⬡</div>
+                <h1 class="login-brand__title">{{ 'login.welcome'|trans }}</h1>
+                <p class="login-brand__sub">{{ 'login.sub'|trans }}</p>
+            </div>
+
+            <div class="login-card">
+                {% if error %}
+                    <div style="background:rgba(244,63,142,.08); border:1px solid rgba(244,63,142,.25); color:#fda4c6; padding:.85rem 1rem; border-radius:var(--r-sm); font-family:var(--mono); font-size:.78rem; margin-bottom:1.25rem;">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{{ path('app_login') }}">
+                    <div class="login-field">
+                        <label for="username">{{ 'login.email'|trans }}</label>
+                        <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
+                    </div>
+                    <div class="login-field" style="margin-bottom:1.75rem;">
+                        <label for="password">{{ 'login.password'|trans }}</label>
+                        <input type="password" name="_password" id="password" autocomplete="current-password" required>
+                    </div>
+                    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+                    <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:.8rem;">
+                        {{ 'login.submit'|trans }}
+                    </button>
+                </form>
+            </div>
+
+            <div class="login-footer">
+                {{ 'login.noAccount'|trans }}
+                <a href="{{ path('app_registration') }}">{{ 'login.registerLink'|trans }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

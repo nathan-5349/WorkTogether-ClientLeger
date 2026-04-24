@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier mon profil{% endblock %}
+
+{% block body %}
+    {# edit #}
+    <div class="wt-container">
+        <div style="max-width:620px; margin:0 auto; padding:3.5rem 0;">
+            <span class="wt-label">{{ 'edit.label'|trans }}</span>
+            <h1 class="wt-h1" style="font-size:1.8rem; margin-bottom:2rem;">{{ 'edit.title'|trans }}</h1>
+
+            <div style="background:var(--glass); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); border:1px solid var(--border); border-radius:var(--r-lg); padding:2rem;">
+                {{ form_start(form) }}
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 1.25rem;">
+                    {{ form_row(form.firstName) }}
+                    {{ form_row(form.name) }}
+                </div>
+                {{ form_row(form.email) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.adress) }}
+                {{ form_row(form.invoiceAdress) }}
+                {% if user.isParticular %}
+                    {{ form_row(form.gender) }}
+                {% else %}
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 1.25rem;">
+                        {{ form_row(form.siret) }}
+                        {{ form_row(form.companyName) }}
+                    </div>
+                {% endif %}
+                <div style="display:flex; gap:.75rem; margin-top:1.5rem;">
+                    <button type="submit" class="btn btn-primary">{{ 'common.save'|trans }}</button>
+                    <a href="{{ path('app_customer_profile') }}" class="btn btn-ghost">{{ 'common.cancel'|trans }}</a>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+{% block title %}Commande confirmée{% endblock %}
+
+{% block body %}
+<style>
+    .success-wrap {
+        min-height: calc(100vh - 68px);
+        display: flex; align-items: center; justify-content: center; padding: 2rem;
+    }
+    .success-box { width: 100%; max-width: 540px; }
+    .success-icon {
+        width: 60px; height: 60px; border-radius: 50%;
+        background: rgba(163,230,53,.1); border: 1px solid rgba(163,230,53,.3);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; margin-bottom: 1.5rem;
+    }
+    .success-title { font-size: 2rem; font-weight: 900; letter-spacing: -.04em; margin-bottom: .5rem; }
+    .success-sub   { color: var(--muted); font-weight: 300; margin-bottom: 2rem; }
+
+    .summary {
+        background: var(--glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 1.5rem;
+    }
+    .summary-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: .85rem 1.4rem; border-bottom: 1px solid var(--border);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row__key { font-family: var(--mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
+    .summary-row__val { font-family: var(--mono); font-size: .84rem; font-weight: 500; }
+
+    .units-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+    .unit-chip {
+        font-family: var(--mono); font-size: .72rem;
+        background: rgba(6,214,247,.08); border: 1px solid rgba(6,214,247,.2);
+        color: var(--cyan); padding: .28rem .7rem; border-radius: 5px;
+    }
+</style>
+
+    <div class="success-wrap">
+        <div class="success-box">
+            <div class="success-icon">✓</div>
+            <h1 class="success-title grad-text">{{ 'success.title'|trans }}</h1>
+            <p class="success-sub">{{ 'success.sub'|trans }}</p>
+
+            <div class="summary">
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.offer'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.offer.name }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.price'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.offer.price }} €/mois</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.begin'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.beginDate|date('d/m/Y') }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.end'|trans }}</span>
+                    <span class="summary-row__val">{{ reservation.finishDate|date('d/m/Y') }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-row__key">{{ 'success.status'|trans }}</span>
+                    <span class="summary-row__val" style="color:#fbbf24;">{{ reservation.status.value }}</span>
+                </div>
+            </div>
+
+            <p style="font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:.75rem;">{{ 'success.assignedUnits'|trans }}</p>
+            <div class="units-chips">
+                {% for unit in reservation.units %}
+                    <span class="unit-chip">{{ unit.bay.name }}-{{ unit.name }}</span>
+                {% endfor %}
+            </div>
+
+            <a href="{{ path('app_customer_dashboard') }}" class="btn btn-primary btn-lg">
+                {{ 'success.goToDashboard'|trans }}
+            </a>
+        </div>
+    </div>
+{% endblock %}
