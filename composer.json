@@ -64,6 +64,9 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
         },
+        "lint:cs": "php-cs-fixer fix --dry-run --diff",
+        "lint:stan": "phpstan analyse",
+        "test": "phpunit",
         "post-install-cmd": [
             "@auto-scripts"
         ],
@@ -81,6 +84,9 @@
         }
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^10.5",
         "symfony/maker-bundle": "^1.65",
         "symfony/stopwatch": "7.4.*",
         "symfony/web-profiler-bundle": "7.4.*"
