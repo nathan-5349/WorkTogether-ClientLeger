@@ -1,8 +1,8 @@
-name: Build & Push Docker image (main)
+name: Build & Push Docker image (devops)
 
 on:
   push:
-    branches: [main]
+    branches: [devops]
 
 permissions:
   contents: read
