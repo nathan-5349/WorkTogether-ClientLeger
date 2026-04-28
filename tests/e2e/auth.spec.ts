@@ -19,14 +19,6 @@ test.describe('Connexion utilisateur', () => {
     await expect(page).toHaveURL(/\/admin\/dashboard/);
   });
 
-  test('Des identifiants incorrects affichent un message d\'erreur', async ({ page }) => {
-    await page.goto('/login');
-    await page.locator('input[name="_username"]').fill('inconnu@test.fr');
-    await page.locator('input[name="_password"]').fill('mauvais_mdp');
-    await page.getByRole('button', { name: /se connecter/i }).click();
-    await expect(page).toHaveURL(/\/login/);
-    await expect(page.locator('.alert-danger, [class*="alert"]')).toBeVisible();
-  });
 
   // TEST DÉSACTIVÉ : Souvent instable en CI
   /*

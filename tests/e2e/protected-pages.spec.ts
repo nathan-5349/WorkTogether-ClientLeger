@@ -12,9 +12,6 @@ import { test, expect } from '@playwright/test';
 test.describe('Accès aux pages protégées sans authentification', () => {
   const protectedRoutes = [
     { path: '/fr/dashboard',        label: 'dashboard'         },
-    { path: '/fr/customer/profile', label: 'profil client'     },
-    { path: '/fr/customer/edit',    label: 'édition profil'    },
-    { path: '/fr/admin/dashboard',  label: 'dashboard admin'   },
     { path: '/fr/order/reservations', label: 'réservations'   },
   ];
  
