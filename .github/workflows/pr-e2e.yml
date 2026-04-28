@@ -2,7 +2,7 @@ name: PR E2E (Playwright) - Symfony WorkTogether
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ devops ]
 
 permissions:
   contents: read
