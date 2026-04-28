@@ -2,7 +2,7 @@ name: PR E2E (Playwright) - Symfony WorkTogether
 
 on:
   pull_request:
-    branches: [ devops ]
+    branches: [ test-ci ]
 
 permissions:
   contents: read
@@ -50,7 +50,7 @@ jobs:
           path: |
             ~/.composer/cache/files
             vendor
-          key: $ runner.os -php-$ hashFiles('**/composer.lock') 
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
 
       - name: Install PHP dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
