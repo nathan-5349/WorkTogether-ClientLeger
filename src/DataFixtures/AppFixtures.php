@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Entity\Administrator;
-use App\Entity\Technician;
-use App\Entity\Support;
 use App\Entity\Accountant;
-use App\Entity\Company;
-use App\Entity\Particular;
-use App\Entity\Offer;
+use App\Entity\Administrator;
 use App\Entity\Bay;
-use App\Entity\Unit;
+use App\Entity\Company;
 use App\Entity\Intervention;
-use App\Entity\Reservation;
 use App\Entity\Notice;
+use App\Entity\Offer;
+use App\Entity\Particular;
+use App\Entity\Reservation;
+use App\Entity\Support;
+use App\Entity\Technician;
 use App\Entity\Ticket;
+use App\Entity\Unit;
 use App\Enum\ReservationStatus;
 use App\Enum\TicketStatus;
 use App\Enum\UnitStatus;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -115,7 +117,7 @@ class AppFixtures extends Fixture
         $companiesData = [
             ['email' => 'company@test.fr',  'firstName' => 'Marc',   'name' => 'Leroy',   'phone' => '0701010101', 'adress' => '1 rue Basse, Nantes',        'siret' => '12345678901234', 'companyName' => 'TechCorp SAS'],
             ['email' => 'company2@test.fr', 'firstName' => 'Julie',  'name' => 'Morin',   'phone' => '0702020202', 'adress' => '8 boulevard Haussmann, Paris', 'siret' => '98765432109876', 'companyName' => 'DataSoft SARL'],
-            ['email' => 'company3@test.fr', 'firstName' => 'Kevin',  'name' => 'Blanc',   'phone' => '0703030303', 'adress' => '3 rue de la République, Lille','siret' => '11223344556677', 'companyName' => 'CloudNet SA'],
+            ['email' => 'company3@test.fr', 'firstName' => 'Kevin',  'name' => 'Blanc',   'phone' => '0703030303', 'adress' => '3 rue de la République, Lille', 'siret' => '11223344556677', 'companyName' => 'CloudNet SA'],
         ];
 
         $companies = [];
@@ -154,11 +156,11 @@ class AppFixtures extends Fixture
                   ->setPrice($price);
             $manager->persist($offer);
             $activeOffers[] = $offer;
-            if ($index === 0) {
+            if (0 === $index) {
                 $this->addReference('offer-first', $offer);
             }
         }
-        $activeOffers[1] -> setVersion(2);
+        $activeOffers[1]->setVersion(2);
 
         // Simulation d'une offre modifiée — ancienne version inactive
         $oldOffer = new Offer();
@@ -176,23 +178,29 @@ class AppFixtures extends Fixture
 
         $unitStatuses = [UnitStatus::Available, UnitStatus::Available, UnitStatus::Available, UnitStatus::Unavailable, UnitStatus::Maintenance];
 
-        for ($b = 1; $b <= 30; $b++) {
+        for ($b = 1; $b <= 30; ++$b) {
             $bay = new Bay();
             $bay->setCapacityUnit(42);
-            $bay->setName(sprintf('B%03d', $b));
+            $bay->setName(\sprintf('B%03d', $b));
             $manager->persist($bay);
 
-            for ($u = 1; $u <= 42; $u++) {
+            for ($u = 1; $u <= 42; ++$u) {
                 $unit = new Unit();
-                $unit->setName(sprintf('U%02d', $u))
+                $unit->setName(\sprintf('U%02d', $u))
                      ->setPosition($u)
                      ->setBay($bay)
                      ->setPowerConsumption(rand(100, 500))
                      ->setTemperature(rand(18, 26) + (rand(0, 9) / 10))
                      ->setNetworkThroughput(rand(1, 10));
-                if ($b === 1 && $u === 1) $this->addReference('unit-1-1', $unit);
-                if ($b === 1 && $u === 2) $this->addReference('unit-1-2', $unit);
-                if ($b === 2 && $u === 1) $this->addReference('unit-2-1', $unit);
+                if (1 === $b && 1 === $u) {
+                    $this->addReference('unit-1-1', $unit);
+                }
+                if (1 === $b && 2 === $u) {
+                    $this->addReference('unit-1-2', $unit);
+                }
+                if (2 === $b && 1 === $u) {
+                    $this->addReference('unit-2-1', $unit);
+                }
                 $manager->persist($unit);
             }
         }
@@ -218,9 +226,9 @@ class AppFixtures extends Fixture
                         ->setOffer($offer)
                         ->setStatus($status)
                         ->addUnit($this->getReference($unitRef, Unit::class));
-                        if ($status === ReservationStatus::Confirmed) {
-                            $this->getReference($unitRef, Unit::class)->setStatus(UnitStatus::Unavailable); // ✅
-                        }
+            if (ReservationStatus::Confirmed === $status) {
+                $this->getReference($unitRef, Unit::class)->setStatus(UnitStatus::Unavailable); // ✅
+            }
             $manager->persist($reservation);
         }
 
@@ -284,11 +292,11 @@ class AppFixtures extends Fixture
                    ->setStatus($status)
                    ->setCustomer($customer);
 
-            if ($status === TicketStatus::Resolved) {
+            if (TicketStatus::Resolved === $status) {
                 $ticket->setCloseDate(new \DateTime('2026-03-15 10:00:00'));
                 $ticket->setAssignedBy($administrator);
             }
-            if ($technician !== null) {
+            if (null !== $technician) {
                 $ticket->addTechnician($technician);
                 $ticket->setAssignedBy($administrator);
             }

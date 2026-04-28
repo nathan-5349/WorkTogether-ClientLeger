@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\ParticularRepository;
@@ -19,6 +21,7 @@ class Particular extends Customer
     public function setGender(string $gender): static
     {
         $this->gender = $gender;
+
         return $this;
     }
 }

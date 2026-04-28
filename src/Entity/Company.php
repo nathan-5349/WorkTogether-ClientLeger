@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\CompanyRepository;
@@ -34,6 +36,7 @@ class Company extends Customer
     public function setCompanyName(string $companyName): static
     {
         $this->companyName = $companyName;
+
         return $this;
     }
 }

@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\Customer;
-use App\Entity\Intervention;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class InterventionProvider implements ProviderInterface
 {
     public function __construct(private Security $security)
-    {}
+    {
+    }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array
     {
@@ -25,7 +27,7 @@ class InterventionProvider implements ProviderInterface
         foreach ($user->getReservations() as $reservation) {
             foreach ($reservation->getUnits() as $unit) {
                 foreach ($unit->getInterventions() as $intervention) {
-                    if (!in_array($intervention, $interventions)) {
+                    if (!\in_array($intervention, $interventions)) {
                         $interventions[] = $intervention;
                     }
                 }

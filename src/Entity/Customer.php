@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\CustomerRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\Notice;
-use App\Entity\Reservation;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 abstract class Customer extends User
 {
-
     #[ORM\Column(length: 200)]
     private ?string $adress = null;
 
@@ -79,7 +78,7 @@ abstract class Customer extends User
     {
         return $this->notices;
     }
-    
+
     public function addNotice(Notice $notice): static
     {
         if (!$this->notices->contains($notice)) {
@@ -89,6 +88,7 @@ abstract class Customer extends User
 
         return $this;
     }
+
     public function removeNotice(Notice $notice): static
     {
         if ($this->notices->removeElement($notice)) {
@@ -104,22 +104,26 @@ abstract class Customer extends User
     {
         return $this->reservations;
     }
+
     public function addReservation(Reservation $reservation): static
     {
         if (!$this->reservations->contains($reservation)) {
             $this->reservations->add($reservation);
             $reservation->setCustomer($this);
         }
+
         return $this;
     }
+
     public function removeReservation(Reservation $reservation): static
     {
         if ($this->reservations->removeElement($reservation)) {
             if ($reservation->getCustomer() === $this) {
                 $reservation->setCustomer(null);
             }
-        } 
-        return $this;     
+        }
+
+        return $this;
     }
 
     // Utile pour détecter le type de client
